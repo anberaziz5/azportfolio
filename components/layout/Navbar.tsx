@@ -33,11 +33,10 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
           ? "bg-background/80 backdrop-blur-md border-b border-border shadow-sm py-3"
           : "bg-transparent py-5"
-      }`}
+        }`}
     >
       <div className="container mx-auto px-4 md:px-6">
         <nav className="flex items-center justify-between">
@@ -54,7 +53,7 @@ export function Navbar() {
             </div>
           </Link>
 
-          {/* Desktop Sliding Pill Nav */}
+          {/* Desktop Sliding Pill Nav added */}
           <div className="hidden lg:flex flex-1 justify-center relative h-14 items-center">
             <ul className="flex h-10 items-center justify-center p-1 bg-background/50 border border-border/50 rounded-full backdrop-blur-md shadow-sm">
               {navLinks.map((link) => {
@@ -64,8 +63,8 @@ export function Navbar() {
                     key={link.path}
                     className="relative flex items-center justify-center capitalize font-semibold text-sm mx-1"
                   >
-                    <Link 
-                      href={link.path} 
+                    <Link
+                      href={link.path}
                       className={cn(
                         "relative z-20 px-5 py-2 transition-colors duration-300 rounded-full",
                         isActive ? "text-primary-foreground" : "text-foreground/70 hover:text-foreground hover:bg-muted/50"
@@ -88,15 +87,15 @@ export function Navbar() {
 
           <div className="flex items-center gap-4 z-50">
             <ThemeToggle />
-            
+
             {/* Mobile Menu Toggle */}
             <div className="lg:hidden">
               <label className="flex cursor-pointer items-center justify-center text-foreground hover:text-primary transition-colors">
-                <input 
-                  className="hidden" 
-                  type="checkbox" 
-                  onChange={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
-                  checked={isMobileMenuOpen} 
+                <input
+                  className="hidden"
+                  type="checkbox"
+                  onChange={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                  checked={isMobileMenuOpen}
                 />
                 <svg
                   strokeWidth="2"
