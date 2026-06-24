@@ -1,6 +1,9 @@
 import Link from "next/link";
+import Image from "next/image";
 import { client } from "@/sanity/lib/client";
+import { urlForImage } from "@/sanity/lib/image";
 import { FadeInDiv } from "@/components/shared/FadeIn";
+import { DynamicBlogComponent } from "@/components/blog/DynamicBlogComponent";
 
 export const metadata = {
   title: "Blog | Anber Aziz",
@@ -15,8 +18,10 @@ async function getPosts() {
     _id,
     title,
     slug,
+    mainImage,
+    mainComponent,
     publishedAt,
-    excerpt,
+    metaDescription,
     "categories": categories[]
   }`;
   
@@ -55,9 +60,24 @@ export default async function BlogPage() {
             {posts.map((post: any) => (
               <Link 
                 key={post._id} 
-                href={`/blog/\${post.slug.current}`}
-                className="group p-8 bg-card rounded-[2rem] border border-border hover:border-primary/50 transition-colors shadow-sm hover:shadow-md flex flex-col"
+                href={`/blog/${post.slug.current}`}
+                className="group p-8 bg-card rounded-[2rem] border border-border hover:border-primary/50 transition-colors shadow-sm hover:shadow-md flex flex-col overflow-hidden"
               >
+                {post.mainComponent ? (
+                  <div className="relative w-full h-48 mb-6 rounded-xl overflow-hidden bg-muted/20 border border-border">
+                    <DynamicBlogComponent componentName={post.mainComponent} />
+                  </div>
+                ) : post.mainImage ? (
+                  <div className="relative w-full h-48 mb-6 rounded-xl overflow-hidden bg-muted/20">
+                    <Image 
+                      src={urlForImage(post.mainImage).url()} 
+                      alt={post.mainImage.alt || post.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                ) : null}
+                
                 <div className="mb-6 flex flex-wrap gap-2">
                   {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                   {post.categories?.map((cat: any, idx: number) => (
@@ -72,7 +92,7 @@ export default async function BlogPage() {
                 </h2>
                 
                 <p className="text-muted-foreground mb-8 line-clamp-3">
-                  {post.excerpt || "No excerpt provided."}
+                  {post.metaDescription || "No description provided."}
                 </p>
                 
                 <div className="mt-auto flex items-center justify-between text-sm font-medium text-muted-foreground border-t border-border pt-6">

@@ -1,0 +1,30 @@
+# AI Agents and Crawlers Rules
+# We welcome AI indexing for search and discovery (AEO/GEO).
+
+User-agent: *
+Allow: /
+Disallow: /api/
+
+# Explicitly allow specific AI crawlers for AEO and GEO visibility
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Anthropic-ai
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+User-agent: OmgiliBot
+Allow: /
+
+User-agent: FacebookBot
+Allow: /

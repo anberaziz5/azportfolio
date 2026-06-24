@@ -1,0 +1,19 @@
+# Anber Aziz - AI Systems Engineer & Full-Stack Developer
+URL: https://anber.me
+
+## About
+Anber Aziz is a world-class frontend architect and backend systems engineer specializing in autonomous multi-agent systems, hyper-scalable React/Next.js architectures, LLM integration, RAG pipelines, and cloud deployment. Based in Lahore, Pakistan, offering enterprise-grade engineering services globally.
+
+## Services
+- AI & Machine Learning Engineering: Custom RAG pipelines, Agentic AI, LLM Guardrails, Computer Vision.
+- Full-Stack Web Development: Next.js, React, Node.js, modern UI/UX, Brutalist design, high-converting interfaces.
+- Cloud Infrastructure & Deployment: Edge computing, Cloudflare, serverless architectures, robust API design.
+- Technical Consulting: Architecture reviews, system design, performance optimization.
+
+## Mission
+To build intelligent, scalable, and beautiful web experiences that solve impossible problems.
+
+## Contact
+Email: io@anber.me
+GitHub: https://github.com/AnberAziz5
+LinkedIn: https://linkedin.com/in/anber-aziz-70b028266

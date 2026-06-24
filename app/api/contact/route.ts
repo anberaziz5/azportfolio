@@ -14,6 +14,15 @@ export async function POST(req: Request) {
       );
     }
 
+    if (typeof name !== "string" || name.length > 100 || 
+        typeof email !== "string" || email.length > 150 || 
+        typeof message !== "string" || message.length > 5000) {
+      return NextResponse.json(
+        { error: "Payload exceeds size limits" },
+        { status: 400 }
+      );
+    }
+
     // Attempt to send email to both the site owner and the sender.
     // NOTE: Sending to the visitor's email requires a verified domain on Resend.
     const { data, error } = await resend.emails.send({

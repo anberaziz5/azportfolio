@@ -17,17 +17,18 @@ export function Footer() {
               AI Systems Engineer & Full-Stack Developer. Building intelligent, scalable, and beautiful web experiences.
             </p>
           </div>
-          
+
           <div className="text-center md:text-left flex flex-col items-center md:items-start">
             <h3 className="font-medium mb-4">Navigation</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li><Link href="/" className="hover:text-primary transition-colors">Home</Link></li>
               <li><Link href="/about" className="hover:text-primary transition-colors">About</Link></li>
               <li><Link href="/projects" className="hover:text-primary transition-colors">Projects</Link></li>
-              <li><Link href="/experience" className="hover:text-primary transition-colors">Experience</Link></li>
+              <li><Link href="/services" className="hover:text-primary transition-colors">Services</Link></li>
+              <li><Link href="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
             </ul>
           </div>
-          
+
           <div className="text-center md:text-left flex flex-col items-center md:items-start">
             <h3 className="font-medium mb-4">Connect</h3>
             <div className="flex gap-4 justify-center md:justify-start">
@@ -50,10 +51,14 @@ export function Footer() {
             </div>
           </div>
         </div>
-        
-        <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-border/50 text-xs text-muted-foreground">
+
+        <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-border/50 text-xs text-muted-foreground gap-4">
           <p>© {new Date().getFullYear()} Anber Aziz. All rights reserved.</p>
-          <p className="mt-2 md:mt-0 flex items-center gap-1">
+          <div className="flex items-center gap-6">
+            <Link href="/privacy-policy" className="hover:text-primary transition-colors">Privacy Policy</Link>
+            <Link href="/terms-and-conditions" className="hover:text-primary transition-colors">Terms & Conditions</Link>
+          </div>
+          <p className="flex items-center gap-1">
             Built with Next.js & <span className="text-primary">☕</span>
           </p>
         </div>

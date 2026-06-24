@@ -14,6 +14,17 @@ export async function POST(req: Request) {
       );
     }
 
+    if (typeof name !== "string" || name.length > 100 || 
+        typeof email !== "string" || email.length > 150 || 
+        typeof requirements !== "string" || requirements.length > 5000 ||
+        (phone && (typeof phone !== "string" || phone.length > 50)) ||
+        (availability && (typeof availability !== "string" || availability.length > 100))) {
+      return NextResponse.json(
+        { error: "Payload exceeds size limits" },
+        { status: 400 }
+      );
+    }
+
     // Fire TWO emails using Promise.all
     // 1. Internal Notification
     // 2. Client Confirmation

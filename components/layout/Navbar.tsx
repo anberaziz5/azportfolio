@@ -14,7 +14,7 @@ const navLinks = [
   { name: "projects", path: "/projects", icon: <Briefcase className="w-5 h-5" /> },
   { name: "services", path: "/services", icon: <Layers className="w-5 h-5" /> },
   { name: "blog", path: "/blog", icon: <PenTool className="w-5 h-5" /> },
-  { name: "mystory", path: "/mystory", icon: <Sparkles className="w-5 h-5" /> },
+  { name: "my story", path: "/mystory", icon: <Sparkles className="w-5 h-5" /> },
   { name: "contact", path: "/contact", icon: <Mail className="w-5 h-5" /> },
 ];
 

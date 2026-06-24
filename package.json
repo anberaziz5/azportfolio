@@ -12,6 +12,7 @@
     "@paper-design/shaders-react": "^0.0.76",
     "@portabletext/react": "^6.2.0",
     "@sanity/image-url": "^2.1.1",
+    "@tailwindcss/typography": "^0.5.20",
     "@tsparticles/engine": "^3.9.1",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.9.1",
@@ -27,6 +28,8 @@
     "react-dom": "19.2.4",
     "react-icons": "^5.6.0",
     "resend": "^6.14.0",
+    "sanity": "^5.31.1",
+    "styled-components": "^6.4.2",
     "tailwind-merge": "^3.6.0",
     "three": "^0.184.0"
   },
