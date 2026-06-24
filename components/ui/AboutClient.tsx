@@ -348,7 +348,7 @@ export function AboutClient() {
                 transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                 className="absolute inset-0 z-20 bg-primary"
               />
-              <Image src="/about5.webp" alt="Anber Aziz workspace" fill className="object-cover" />
+              <Image src="/about5.webp" alt="Anber Aziz workspace" fill className="object-cover object-top" />
             </div>
           </div>
         </div>

@@ -20,8 +20,8 @@ export default function MyStoryPage() {
           </h1>
         </div>
 
-        <article className="prose prose-lg dark:prose-invert max-w-none">
-          <div className="bg-card border border-border rounded-[2rem] p-8 md:p-12 shadow-sm mb-12">
+        <article className="prose prose-lg dark:prose-invert max-w-none relative z-10">
+          <div className="bg-card/60 backdrop-blur-md border border-border rounded-[2rem] p-8 md:p-12 shadow-sm mb-12">
             <h2 className="text-3xl font-bold mt-0 mb-6 flex items-center gap-3">
               <Globe className="text-primary w-8 h-8" />
               The Drive to Build
@@ -34,7 +34,7 @@ export default function MyStoryPage() {
             </p>
           </div>
 
-          <div className="bg-background border border-border rounded-[2rem] p-8 md:p-12 shadow-sm mb-12 relative overflow-hidden">
+          <div className="bg-background/60 backdrop-blur-md border border-border rounded-[2rem] p-8 md:p-12 shadow-sm mb-12 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-2 h-full bg-primary" />
             <h2 className="text-3xl font-bold mt-0 mb-6 flex items-center gap-3">
               <HeartHandshake className="text-primary w-8 h-8" />
@@ -51,7 +51,7 @@ export default function MyStoryPage() {
             </p>
           </div>
 
-          <div className="bg-card border border-border rounded-[2rem] p-8 md:p-12 shadow-sm">
+          <div className="bg-card/60 backdrop-blur-md border border-border rounded-[2rem] p-8 md:p-12 shadow-sm">
             <h2 className="text-3xl font-bold mt-0 mb-6 flex items-center gap-3">
               <BookOpen className="text-primary w-8 h-8" />
               Looking Forward

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
 
 interface ServiceModalProps {
   isOpen: boolean;
@@ -83,7 +84,7 @@ export function ServiceModal({ isOpen, onClose, serviceTitle }: ServiceModalProp
               onClick={onClose}
               className="absolute top-6 right-6 text-muted-foreground hover:text-foreground transition-colors font-mono text-sm"
             >
-              [CLOSE]
+              <X className="w-6 h-6" />
             </button>
             
             <div className="mb-10">

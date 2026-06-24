@@ -155,7 +155,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   };
 
   return (
-    <article className="min-h-screen pt-32 pb-24 bg-background">
+    <article className="min-h-screen pt-32 pb-24 bg-background max-w-[100vw] overflow-x-hidden">
       <div className="container mx-auto px-4 md:px-6 max-w-3xl">
         
         <Link href="/blog" className="inline-flex items-center text-muted-foreground hover:text-primary transition-colors mb-12 group">

@@ -159,6 +159,14 @@ export function Navbar() {
                   </motion.li>
                 );
               })}
+              <motion.li
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.05 * navLinks.length }}
+                className="mt-6 flex justify-center pt-6 border-t border-border/50"
+              >
+                <ThemeToggle />
+              </motion.li>
             </ul>
           </motion.div>
         )}
