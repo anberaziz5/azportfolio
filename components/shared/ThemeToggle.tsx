@@ -6,12 +6,12 @@ import { useEffect, useState } from "react";
 
 export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
-  const { setTheme, theme } = useTheme();
+  const { setTheme, theme, resolvedTheme } = useTheme();
 
   useEffect(() => setMounted(true), []);
 
   const toggleTheme = () => {
-    if (theme === "light") {
+    if (resolvedTheme === "light") {
       setTheme("dark");
       return;
     }
@@ -30,23 +30,31 @@ export function ThemeToggle() {
         }}
       >
         <AnimatePresence initial={false}>
-          <motion.button
-            className={`relative isolate flex items-center rounded-full p-1 border ${
-              theme === "light" ? "justify-end" : "justify-start"
+          <button
+            type="button"
+            className={`relative isolate flex items-center rounded-full p-1 border cursor-pointer ${
+              resolvedTheme === "light" ? "justify-end" : "justify-start"
             }`}
             style={{
               height: 40,
               width: 80,
+              backgroundColor: resolvedTheme === "light" ? "#ffffff" : "#272727",
+              borderColor: resolvedTheme === "light" ? "#e5e7eb" : "#3f3f46"
             }}
-            animate={{
-              backgroundColor: theme === "light" ? "#ffffff" : "#272727",
-              borderColor: theme === "light" ? "#e5e7eb" : "#3f3f46"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              toggleTheme();
             }}
-            onClick={toggleTheme}
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              toggleTheme();
+            }}
           >
             <motion.div
               className="absolute left-0 -z-10 flex w-full justify-between text-xs font-medium tracking-wide px-2"
-              animate={{ color: theme === "light" ? "#797979" : "#A2A2A2" }}
+              animate={{ color: resolvedTheme === "light" ? "#797979" : "#A2A2A2" }}
             >
               <span className="flex w-full justify-center">L</span>
               <span className="flex w-full justify-center">D</span>
@@ -56,22 +64,22 @@ export function ThemeToggle() {
               layout
               className="flex aspect-square h-full rounded-full border-2 p-0.5 shadow-sm"
               animate={{
-                backgroundColor: theme === "light" ? "#ffffff" : "#363636",
-                borderColor: theme === "light" ? "#D8D8D8" : "#535353",
+                backgroundColor: resolvedTheme === "light" ? "#ffffff" : "#363636",
+                borderColor: resolvedTheme === "light" ? "#D8D8D8" : "#535353",
               }}
             >
               <motion.div
                 className="h-full w-full rounded-full"
                 animate={{
-                  backgroundColor: theme === "light" ? "#f3f4f6" : "#464646",
+                  backgroundColor: resolvedTheme === "light" ? "#f3f4f6" : "#464646",
                   boxShadow:
-                    theme === "light"
+                    resolvedTheme === "light"
                       ? "inset 1px 1px 2px rgba(0,0,0,0.1)"
                       : "inset 1px 1px 2px rgba(0,0,0,0.5)",
                 }}
               />
             </motion.div>
-          </motion.button>
+          </button>
         </AnimatePresence>
       </MotionConfig>
     </div>
