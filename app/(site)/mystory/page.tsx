@@ -43,7 +43,7 @@ export default function MyStoryPage() {
                 : "text-muted-foreground hover:text-foreground"
             }`}
           >
-            {tab === "life" ? "Life Story" : tab === "education" ? "Education" : "Research Philosophy"}
+            {tab === "life" ? "Life Story" : tab === "education" ? "Education" : "Research APPROACH"}
           </button>
         ))}
       </div>
