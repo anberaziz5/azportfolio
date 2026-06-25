@@ -1,3 +1,5 @@
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
 export default function AdminLayout({
   children,
 }: {
@@ -5,7 +7,10 @@ export default function AdminLayout({
 }) {
   return (
     <html lang="en">
-      <body style={{ margin: 0, padding: 0 }}>{children}</body>
+      <body style={{ margin: 0, padding: 0 }}>
+        {children}
+        <SpeedInsights />
+      </body>
     </html>
   );
 }
