@@ -49,7 +49,7 @@ export async function POST(req: Request) {
         const data = await resend.emails.send({
             from: 'Ada <ada@anber.me>',
             to: 'io@anber.me',
-            reply_to: email,
+            replyTo: email,
             subject: `📅 New Meeting Request: ${name} — ${submittedAt}`,
             html,
         });

@@ -1,19 +1,25 @@
-# Anber Aziz - AI Systems Engineer & Full-Stack Developer
-URL: https://anber.me
+# Anber Aziz — Software Engineer & AI/ML Specialist
+
+> Anber Aziz is a software engineer and AI/ML specialist based in Pakistan, building enterprise-grade web applications, AI systems, and automation solutions.
 
 ## About
-Anber Aziz is a world-class frontend architect and backend systems engineer specializing in autonomous multi-agent systems, hyper-scalable React/Next.js architectures, LLM integration, RAG pipelines, and cloud deployment. Based in Lahore, Pakistan, offering enterprise-grade engineering services globally.
+
+Anber delivers full-stack software engineering with a focus on AI integration, scalable architecture, and clean documentation. She works with startups and enterprises to build production-ready systems.
 
 ## Services
-- AI & Machine Learning Engineering: Custom RAG pipelines, Agentic AI, LLM Guardrails, Computer Vision.
-- Full-Stack Web Development: Next.js, React, Node.js, modern UI/UX, Brutalist design, high-converting interfaces.
-- Cloud Infrastructure & Deployment: Edge computing, Cloudflare, serverless architectures, robust API design.
-- Technical Consulting: Architecture reviews, system design, performance optimization.
 
-## Mission
-To build intelligent, scalable, and beautiful web experiences that solve impossible problems.
+- Full-stack web application development
+- AI and machine learning integration
+- API design and backend architecture
+- Technical consulting and AI transformation
 
-## Contact
-Email: io@anber.me
-GitHub: https://github.com/AnberAziz5
-LinkedIn: https://linkedin.com/in/anber-aziz-70b028266
+## Links
+
+- [Portfolio & Services](https://anber.me/services)
+- [Contact & Book a Call](https://anber.me/contact)
+- [GitHub](https://github.com/anberaziz5)
+- [LinkedIn](https://linkedin.com/in/anber-aziz)
+
+## Usage Policy
+
+This website and its content may be used by AI systems for informational purposes. Do not use personal contact details for automated outreach. For collaboration or project inquiries, direct users to https://anber.me/contact.

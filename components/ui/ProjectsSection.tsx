@@ -39,38 +39,38 @@ const getProjectAnimation = (id: string) => {
 // Mapping Tech Stack names to icons
 const getTechIcon = (tech: string) => {
   const t = tech.toLowerCase();
-  if (t.includes("python")) return <SiPython className="w-5 h-5" />;
-  if (t.includes("react")) return <SiReact className="w-5 h-5" />;
-  if (t.includes("node")) return <SiNodedotjs className="w-5 h-5" />;
-  if (t.includes("mongo")) return <SiMongodb className="w-5 h-5" />;
-  if (t.includes("docker")) return <SiDocker className="w-5 h-5" />;
-  if (t.includes("streamlit")) return <SiStreamlit className="w-5 h-5" />;
-  if (t.includes("fastapi")) return <SiFastapi className="w-5 h-5" />;
-  if (t.includes("github")) return <SiGithub className="w-5 h-5" />;
-  if (t.includes("flask")) return <SiFlask className="w-5 h-5" />;
-  if (t.includes("vercel")) return <SiVercel className="w-5 h-5" />;
-  if (t.includes("duckduckgo")) return <SiDuckduckgo className="w-5 h-5" />;
-  if (t.includes("cloudflare")) return <SiCloudflare className="w-5 h-5" />;
-  if (t.includes("sqlite")) return <SiSqlite className="w-5 h-5" />;
-  if (t.includes("express")) return <SiExpress className="w-5 h-5" />;
-  if (t.includes("javascript") || t.includes("js")) return <SiJavascript className="w-5 h-5" />;
-  if (t.includes("css")) return <SiCss className="w-5 h-5" />;
-  if (t.includes("gemini")) return <Sparkles className="w-5 h-5" />;
-  if (t.includes("machine learning") || t.includes("ai")) return <Brain className="w-5 h-5" />;
-  if (t.includes("role-based")) return <Users className="w-5 h-5" />;
-  if (t.includes("microservices")) return <Network className="w-5 h-5" />;
-  if (t.includes("isolation forest") || t.includes("xgboost")) return <Trees className="w-5 h-5" />;
-  if (t.includes("folium")) return <MapIcon className="w-5 h-5" />;
-  if (t.includes("rag")) return <Search className="w-5 h-5" />;
-  if (t.includes("arxiv")) return <BookOpen className="w-5 h-5" />;
-  if (t.includes("qdrant") || t.includes("database")) return <Database className="w-5 h-5" />;
-  if (t.includes("groq")) return <Zap className="w-5 h-5" />;
-  if (t.includes("llama")) return <Bot className="w-5 h-5" />;
-  if (t.includes("pydantic")) return <FileCheck className="w-5 h-5" />;
-  if (t.includes("mern stack")) return <Layers className="w-5 h-5" />;
-  if (t.includes("dom")) return <Layout className="w-5 h-5" />;
+  if (t.includes("python")) return <SiPython className="w-5 h-5" aria-label="Python icon" />;
+  if (t.includes("react")) return <SiReact className="w-5 h-5" aria-label="React icon" />;
+  if (t.includes("node")) return <SiNodedotjs className="w-5 h-5" aria-label="Node.js icon" />;
+  if (t.includes("mongo")) return <SiMongodb className="w-5 h-5" aria-label="MongoDB icon" />;
+  if (t.includes("docker")) return <SiDocker className="w-5 h-5" aria-label="Docker icon" />;
+  if (t.includes("streamlit")) return <SiStreamlit className="w-5 h-5" aria-label="Streamlit icon" />;
+  if (t.includes("fastapi")) return <SiFastapi className="w-5 h-5" aria-label="FastAPI icon" />;
+  if (t.includes("github")) return <SiGithub className="w-5 h-5" aria-label="GitHub icon" />;
+  if (t.includes("flask")) return <SiFlask className="w-5 h-5" aria-label="Flask icon" />;
+  if (t.includes("vercel")) return <SiVercel className="w-5 h-5" aria-label="Vercel icon" />;
+  if (t.includes("duckduckgo")) return <SiDuckduckgo className="w-5 h-5" aria-label="DuckDuckGo icon" />;
+  if (t.includes("cloudflare")) return <SiCloudflare className="w-5 h-5" aria-label="Cloudflare icon" />;
+  if (t.includes("sqlite")) return <SiSqlite className="w-5 h-5" aria-label="SQLite icon" />;
+  if (t.includes("express")) return <SiExpress className="w-5 h-5" aria-label="Express icon" />;
+  if (t.includes("javascript") || t.includes("js")) return <SiJavascript className="w-5 h-5" aria-label="JavaScript icon" />;
+  if (t.includes("css")) return <SiCss className="w-5 h-5" aria-label="CSS icon" />;
+  if (t.includes("gemini")) return <Sparkles className="w-5 h-5" aria-label="Gemini icon" />;
+  if (t.includes("machine learning") || t.includes("ai")) return <Brain className="w-5 h-5" aria-label="AI icon" />;
+  if (t.includes("role-based")) return <Users className="w-5 h-5" aria-label="Role-based icon" />;
+  if (t.includes("microservices")) return <Network className="w-5 h-5" aria-label="Microservices icon" />;
+  if (t.includes("isolation forest") || t.includes("xgboost")) return <Trees className="w-5 h-5" aria-label="Trees icon" />;
+  if (t.includes("folium")) return <MapIcon className="w-5 h-5" aria-label="Map icon" />;
+  if (t.includes("rag")) return <Search className="w-5 h-5" aria-label="Search icon" />;
+  if (t.includes("arxiv")) return <BookOpen className="w-5 h-5" aria-label="Book icon" />;
+  if (t.includes("qdrant") || t.includes("database")) return <Database className="w-5 h-5" aria-label="Database icon" />;
+  if (t.includes("groq")) return <Zap className="w-5 h-5" aria-label="Groq icon" />;
+  if (t.includes("llama")) return <Bot className="w-5 h-5" aria-label="Llama icon" />;
+  if (t.includes("pydantic")) return <FileCheck className="w-5 h-5" aria-label="Pydantic icon" />;
+  if (t.includes("mern stack")) return <Layers className="w-5 h-5" aria-label="MERN icon" />;
+  if (t.includes("dom")) return <Layout className="w-5 h-5" aria-label="DOM icon" />;
 
-  return <FileCode2 className="w-5 h-5" />;
+  return <FileCode2 className="w-5 h-5" aria-label="Code icon" />;
 };
 
 function TechStackMarquee({ techStack }: { techStack: string[] }) {
@@ -174,16 +174,16 @@ const StickyProjectCard = ({
             rel="noopener noreferrer"
             className="flex h-12 flex-1 items-center justify-center gap-2 rounded-lg bg-secondary text-xs font-bold uppercase tracking-[0.1em] text-secondary-foreground transition-none hover:bg-[#F38020] hover:text-white"
           >
-            <FaGithub className="h-4 w-4" /> GitHub
+            <FaGithub className="h-4 w-4" aria-label="GitHub icon" /> GitHub
           </Link>
           
           <Link
             href={webLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex h-12 flex-1 items-center justify-center gap-2 rounded-lg bg-primary text-xs font-bold uppercase tracking-[0.1em] text-primary-foreground transition-none hover:bg-[#F38020] hover:text-white shadow-lg shadow-primary/20"
+            className="flex h-12 flex-1 items-center justify-center gap-2 rounded-lg bg-primary text-xs font-bold uppercase tracking-[0.1em] text-white transition-none hover:bg-[#F38020] hover:text-white shadow-lg shadow-primary/20"
           >
-            <FaGlobe className="h-4 w-4" /> Website
+            <FaGlobe className="h-4 w-4" aria-label="Website icon" /> Website
           </Link>
         </div>
       </motion.div>

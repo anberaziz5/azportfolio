@@ -293,9 +293,10 @@ export function ScheduleMeet() {
                   </div>
                   
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-muted-foreground ml-1">Date & Time</label>
+                    <label htmlFor="datetime" className="text-sm font-medium text-muted-foreground ml-1">Preferred Date & Time</label>
                     <input
                       type="datetime-local"
+                      id="datetime"
                       name="datetime"
                       required
                       value={formData.datetime}

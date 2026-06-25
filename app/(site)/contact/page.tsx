@@ -253,10 +253,10 @@ export default function ContactPage() {
   };
 
   const channels = [
-    { icon: <Mail className="w-5 h-5" />, label:"Email", value: "anberaziz6@gmail.com", href:"mailto:anberaziz6@gmail.com" },
-    { icon: <FaGithub className="w-5 h-5" />, label:"GitHub", value: "github.com/AnberAziz5", href:"https://github.com/AnberAziz5" },
-    { icon: <FaLinkedin className="w-5 h-5" />, label:"LinkedIn", value: "linkedin.com/in/anber-aziz", href:"https://linkedin.com/in/anber-aziz-70b028266" },
-    { icon: <MapPin className="w-5 h-5" />, label:"Location", value: "Lahore, Pakistan", href:"https://maps.google.com/?q=Lahore,Pakistan" },
+    { icon: <Mail className="w-5 h-5" aria-label="Email icon" />, label:"Email", value: "anberaziz6@gmail.com", href:"mailto:anberaziz6@gmail.com" },
+    { icon: <FaGithub className="w-5 h-5" aria-label="GitHub icon" />, label:"GitHub", value: "github.com/AnberAziz5", href:"https://github.com/AnberAziz5" },
+    { icon: <FaLinkedin className="w-5 h-5" aria-label="LinkedIn icon" />, label:"LinkedIn", value: "linkedin.com/in/anber-aziz", href:"https://linkedin.com/in/anber-aziz-70b028266" },
+    { icon: <MapPin className="w-5 h-5" aria-label="Location icon" />, label:"Location", value: "Lahore, Pakistan", href:"https://maps.google.com/?q=Lahore,Pakistan" },
   ];
 
   return (

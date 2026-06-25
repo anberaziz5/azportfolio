@@ -33,15 +33,15 @@ export function Footer() {
             <h3 className="font-medium mb-4">Connect</h3>
             <div className="flex gap-4 justify-center md:justify-start">
               <a href="https://github.com/AnberAziz5" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
-                <FaGithub size={20} />
+                <FaGithub size={20} aria-label="GitHub icon" />
                 <span className="sr-only">GitHub</span>
               </a>
               <a href="https://linkedin.com/in/anber-aziz-70b028266" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
-                <FaLinkedin size={20} />
+                <FaLinkedin size={20} aria-label="LinkedIn icon" />
                 <span className="sr-only">LinkedIn</span>
               </a>
               <a href="mailto:io@anber.me" className="text-muted-foreground hover:text-primary transition-colors">
-                <Mail size={20} />
+                <Mail size={20} aria-label="Email icon" />
                 <span className="sr-only">Email</span>
               </a>
               

@@ -86,7 +86,7 @@ export default function ProjectDetail({ params }: { params: { slug: string } }) 
                 rel="noopener noreferrer"
                 className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-input bg-background px-8 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
               >
-                <FaGithub className="w-4 h-4" />
+                <FaGithub className="w-4 h-4" aria-label="GitHub icon" />
                 View Source Code
               </a>
             )}
