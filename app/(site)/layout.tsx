@@ -9,6 +9,7 @@ import { SVGScrollPath } from "@/components/shared/SVGScrollPath";
 import { PageTransition } from "@/components/shared/PageTransition";
 import { SparklesCore } from "@/components/ui/SparklesCore";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import AdaChat from "@/components/AdaChat";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -66,6 +67,7 @@ export default function RootLayout({
           <Footer />
           <SpeedInsights />
         </ThemeProvider>
+        <AdaChat />
       </body>
     </html>
   );
