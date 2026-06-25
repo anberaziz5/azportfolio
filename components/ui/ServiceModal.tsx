@@ -27,10 +27,20 @@ export function ServiceModal({ isOpen, onClose, serviceTitle }: ServiceModalProp
     setIsSubmitting(true);
     
     try {
-      const response = await fetch("/api/services", {
+      // Direct integration with Web3Forms API
+      const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
         body: JSON.stringify({ 
+          // 1. Enter your Web3Forms Access Key here:
+          access_key: "d73c2de6-da58-4fab-a5e8-bd537f7fa8bb", 
+          subject: `New Portfolio Architecture Request: ${serviceTitle}`,
+          from_name: "Portfolio Portal",
+          
+          // Form Payload
           service: serviceTitle, 
           name: formData.name,
           email: formData.email,
@@ -40,7 +50,9 @@ export function ServiceModal({ isOpen, onClose, serviceTitle }: ServiceModalProp
         }),
       });
       
-      if (response.ok) {
+      const result = await response.json();
+      
+      if (result.success) {
         setIsSuccess(true);
         setTimeout(() => {
           onClose();
@@ -48,10 +60,12 @@ export function ServiceModal({ isOpen, onClose, serviceTitle }: ServiceModalProp
           setFormData({ name: "", email: "", phone: "", requirements: "", date: "", time: "" });
         }, 3000);
       } else {
-        console.error("Failed to submit request.");
+        console.error("Web3Forms submission error:", result.message);
+        alert(`Failed to transmit sequence: ${result.message}`);
       }
     } catch (error) {
       console.error("Error submitting form:", error);
+      alert("A network connectivity error occurred during transmission.");
     } finally {
       setIsSubmitting(false);
     }

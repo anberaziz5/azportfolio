@@ -86,7 +86,7 @@ export function CertificationsSection() {
               <h2 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight">Verified <span className="text-primary">Credentials</span></h2>
               <div className="w-20 h-1 bg-primary mb-6 rounded-full mx-auto md:mx-0" />
               <p className="text-muted-foreground text-lg max-w-2xl">
-                Industry certifications from Google & IBM via Coursera — fully verified, active, and battle-tested.
+              Industry certifications from Google and IBM through Coursera, with all certificates successfully completed and verified.
               </p>
             </div>
           </div>

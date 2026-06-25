@@ -621,7 +621,7 @@ export function ProjectsPageClient() {
         <div className="mt-20 flex items-center gap-6 pt-8 border-t border-[#F38020]/10">
           <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-[#F38020]/20" />
           <a
-            href="https://github.com/anberaziz"
+            href="https://github.com/anberaziz5"
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center gap-2 px-7 py-3 rounded-[3px] bg-[#F38020] text-black font-mono text-[11px] font-bold tracking-[0.1em] uppercase shadow-[0_4px_20px_rgba(243,128,32,0.4)] transition-transform hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(243,128,32,0.55)]"

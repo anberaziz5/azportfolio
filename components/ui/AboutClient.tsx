@@ -16,6 +16,7 @@ import {
   SiDocker, SiVercel, SiGit
 } from "react-icons/si";
 import { FaAws } from "react-icons/fa";
+import Link from 'next/link';
 
 const techStack = [
   { icon: SiPython, name: "Python" },
@@ -191,7 +192,7 @@ export function AboutClient() {
             <div className="md:col-span-7 lg:col-span-8 space-y-12">
               <FadeInSection className="prose prose-lg dark:prose-invert max-w-none">
                 <p>
-                  Currently pursuing my Bachelor of Science in Software Engineering at Lahore College for Women University (LCWU), I am actively preparing to apply for MS/PhD programs in the United States for Fall 2027. My long-term academic focus lies at the intersection of Machine Learning inference optimization, Autonomous Agent orchestration, and robust API infrastructure.
+                I am currently doing a Bachelor of Science in Software Engineering at Lahore College for Women University (LCWU) and planning to apply for MS and PhD programs in the United States for Fall 2027. My academic interests include improving the performance of machine learning systems, working with AI agents, and building reliable APIs and backend systems.
                 </p>
               </FadeInSection>
 
@@ -206,7 +207,7 @@ export function AboutClient() {
                   My technical journey began with web development, where I mastered the MERN stack and Next.js, eventually realizing that the most powerful web applications are those that integrate predictive intelligence. I've since expanded my expertise into Python, XGBoost, LLMs (Gemini, Llama, Groq), and Vector Databases, allowing me to build end-to-end AI products.
                 </p>
                 <p>
-                  Beyond academics, I am an active freelance developer and open-source contributor. I thrive in environments that challenge me to rapidly learn new frameworks—whether it's deploying serverless infrastructure on Vercel, training classification models, or crafting pixel-perfect, highly animated UIs.
+                Along with my academic work, I am a freelance developer and open source contributor. I enjoy working on projects that push me to learn new technologies and solve real problems. My interests range from deploying web applications and developing machine learning solutions to building modern, user friendly interfaces with smooth and engaging user experiences.
                 </p>
               </FadeInSection>
 
@@ -291,7 +292,7 @@ export function AboutClient() {
                   <div className="flex items-center justify-center w-10 h-10 rounded-full border-4 border-background bg-muted shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10" />
                   <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-6 rounded-2xl border border-border bg-card shadow-sm transition-all hover:shadow-md">
                     <h3 className="font-bold text-xl mb-1">Intermediate</h3>
-                    <p className="mt-2 text-muted-foreground">Score: <span className="font-bold text-foreground">85%</span></p>
+                    <p className="mt-2 text-muted-foreground">Score: <span className="font-bold text-foreground">87%</span></p>
                     <p className="mt-1 text-sm text-muted-foreground">Board of Intermediate and Secondary Education, Lahore</p>
                   </div>
                 </FadeInSection>
@@ -301,7 +302,7 @@ export function AboutClient() {
                   <div className="flex items-center justify-center w-10 h-10 rounded-full border-4 border-background bg-muted shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10" />
                   <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-6 rounded-2xl border border-border bg-card shadow-sm transition-all hover:shadow-md">
                     <h3 className="font-bold text-xl mb-1">Matric</h3>
-                    <p className="mt-2 text-muted-foreground">Score: <span className="font-bold text-foreground">85%</span></p>
+                    <p className="mt-2 text-muted-foreground">Score: <span className="font-bold text-foreground">87%</span></p>
                     <p className="mt-1 text-sm text-muted-foreground">Board of Intermediate and Secondary Education, Lahore</p>
                   </div>
                 </FadeInSection>
@@ -333,12 +334,12 @@ export function AboutClient() {
               <p className="text-xl text-muted-foreground mt-4 mb-8">
                 I'm actively seeking MS/PhD opportunities for Fall 2027, as well as freelance engineering roles.
               </p>
-              <a
+              <Link
                 href="/contact"
                 className="inline-flex h-14 items-center justify-center rounded-full bg-primary px-10 text-base font-medium text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:scale-105 active:scale-95"
               >
                 Get in Touch
-              </a>
+              </Link>
             </FadeInSection>
 
             <div ref={img5Ref} className="w-full mt-16 relative aspect-video rounded-3xl overflow-hidden shadow-2xl">

@@ -218,22 +218,35 @@ export default function ContactPage() {
     setSignalTriggered(true);
 
     try {
-      const res = await fetch("/api/contact", {
+      // Swapped out local broken API with optimized Web3Forms direct endpoint
+      const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        // Map subject to message block for backend compatibility
-        body: JSON.stringify({ name: form.name, email: form.email, message: `[Subject: ${form.subject}]\n\n${form.message}` }),
+        headers: { 
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify({ 
+          access_key: "d73c2de6-da58-4fab-a5e8-bd537f7fa8bb", 
+          subject: `New Portfolio Message: ${form.subject}`,
+          from_name: "Portfolio Contact Desk",
+          name: form.name, 
+          email: form.email, 
+          message: form.message 
+        }),
       });
 
-      if (!res.ok) throw new Error("Failed to send");
+      const result = await res.json();
+
+      if (!result.success) throw new Error(result.message || "Failed to send");
       
       setTimeout(() => {
         setSubmitState("sent");
         setForm({ name:"", email:"", subject:"", message:"" });
         setTimeout(() => { setSignalTriggered(false); setSubmitState("idle"); }, 4000);
-      }, 1500); // Simulate processing time for signal animation
+      }, 1500); // Retains your processing signal delay beautifully
     } catch (err) {
-      console.error(err);
+      console.error("Web3Forms submission error:", err);
+      alert("Transmission failed. Please verify configurations and try again.");
       setSubmitState("idle");
       setSignalTriggered(false);
     }

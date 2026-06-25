@@ -44,10 +44,7 @@ export function Footer() {
                 <Mail size={20} />
                 <span className="sr-only">Email</span>
               </a>
-              <a href="#" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
-                <FaTwitter size={20} />
-                <span className="sr-only">Twitter</span>
-              </a>
+              
             </div>
           </div>
         </div>
@@ -59,7 +56,7 @@ export function Footer() {
             <Link href="/terms-and-conditions" className="hover:text-primary transition-colors">Terms & Conditions</Link>
           </div>
           <p className="flex items-center gap-1">
-            Built with Next.js & <span className="text-primary">☕</span>
+            Built with Next.js & <span className="text-primary">Dedication</span>
           </p>
         </div>
       </div>
