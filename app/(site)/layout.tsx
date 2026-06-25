@@ -8,6 +8,7 @@ import { Footer } from "@/components/layout/Footer";
 import { SVGScrollPath } from "@/components/shared/SVGScrollPath";
 import { PageTransition } from "@/components/shared/PageTransition";
 import { SparklesCore } from "@/components/ui/SparklesCore";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -63,6 +64,7 @@ export default function RootLayout({
             <main className="flex-grow flex flex-col">{children}</main>
           </PageTransition>
           <Footer />
+          <SpeedInsights />
         </ThemeProvider>
       </body>
     </html>
