@@ -1,8 +1,8 @@
 const { MongoClient } = require("mongodb");
 
 // 1. Update this to your local or live MongoDB URI connection string
-const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/portfolio"; 
-const dbName = "portfolio"; // Make sure this matches your local database name
+const uri = "mongodb+srv://devuser:medevuser@cluster0.bexhohy.mongodb.net/portfolio?retryWrites=true&w=majority";
+const dbName = "portfolio";
 
 const storiesData = [
   {
