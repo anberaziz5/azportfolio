@@ -4,7 +4,7 @@ const supabase = createClient(
     process.env.SUPABASE_URL!,
     process.env.SUPABASE_ANON_KEY!
 );
-const SIMILARITY_THRESHOLD = 0.45;
+const SIMILARITY_THRESHOLD = 0.40;
 
 // ── GUARDRAILS ──────────────────────────────────────────────
 const BLOCKED_PATTERNS = [
@@ -59,7 +59,8 @@ async function classifyInput(userMessage: string): Promise<'safe' | 'injection' 
             },
             body: JSON.stringify({
                 model: 'openai/gpt-oss-20b',
-                max_tokens: 10,
+                max_completion_tokens: 20,
+                reasoning_effort: 'low',
                 temperature: 0,
                 messages: [
                     {
@@ -138,24 +139,20 @@ function prepareChunkForPrompt(content: string): string {
 function expandQuery(userMessage: string): string {
   const lower = userMessage.toLowerCase().trim();
   
-  // Expand vague project queries
-  if (lower.match(/project|built|portfolio|work|examples|what has she/)) {
-    return `${userMessage} Anber projects portfolio built applications systems`;
+  if (lower.match(/project|built|portfolio|work|example|what has she|show me/)) {
+    return `${userMessage} Anber projects portfolio CyberGuard OpenScholar Omni-Node supply chain AI built applications`;
   }
-  
-  // Expand vague service queries  
-  if (lower.match(/service|offer|do|hire|help|cost|price|rate/)) {
-    return `${userMessage} Anber services engineering AI development consulting`;
+  if (lower.match(/service|offer|do|hire|help|cost|price|rate|what does she/)) {
+    return `${userMessage} Anber services engineering AI development consulting full stack`;
   }
-  
-  // Expand skill queries
   if (lower.match(/skill|tech|stack|know|language|framework|experience/)) {
-    return `${userMessage} Anber technical skills programming languages frameworks`;
+    return `${userMessage} Anber technical skills programming Python React Next.js AI ML`;
   }
-  
-  // Expand background queries
   if (lower.match(/background|about|who|story|education|study|university/)) {
-    return `${userMessage} Anber background education university Pakistan engineer`;
+    return `${userMessage} Anber background education LCWU Pakistan engineer AI`;
+  }
+  if (lower.match(/contact|reach|email|book|meet|call|consult/)) {
+    return `${userMessage} Anber contact email io@anber.me booking consultation`;
   }
   
   return userMessage;
@@ -182,7 +179,7 @@ async function embedQuery(text: string): Promise<number[]> {
 async function retrieveChunks(queryEmbedding: number[]): Promise<{ content: string; similarity: number }[]> {
     const { data, error } = await supabase.rpc('match_chunks', {
         query_embedding: queryEmbedding,
-        match_count: 6,
+        match_count: 8,
         match_threshold: SIMILARITY_THRESHOLD,
     });
     if (error) return [];
@@ -233,6 +230,15 @@ C6. If a user asks what Ada's knowledge comes from, Ada responds only: "I'm trai
 10. Never fabricate project names, outcomes, or tech stacks. Only reference what is explicitly in the context.
 11. If a visitor asks to book a meeting, schedule a call, or arrange a consultation, DO NOT redirect them to anber.me/contact. Instead respond with EXACTLY this phrase so the frontend can detect it and trigger the booking flow: 'Would you like me to help you book a meeting with Anber directly here?' — use this exact phrase every time.
 
+FORMATTING RULES:
+- Use **bold** for project names, service names, and key terms
+- Use bullet lists (- item) when listing 3 or more items
+- Use plain prose for short answers of 1-2 items
+- Never use headers (##) inside responses — too heavy for chat
+- Never use horizontal rules (---) inside responses
+- Keep responses concise — maximum 150 words unless the visitor asks for detail
+- Links must be written as plain URLs, not markdown links: anber.me/contact NOT [contact page](anber.me/contact) — ReactMarkdown will handle display
+
 When answering questions about projects, structure the response as:
 - Brief intro (1 sentence)
 - List 4-6 projects with: Project Name → Type → One key technical detail
@@ -248,7 +254,17 @@ ${context}
 Remember: You are Ada. You represent Anber. You only know what is in the context above.`;
 }
 // ── GROQ CALL ────────────────────────────────────────────────
-async function callGroq(systemPrompt: string, userMessage: string): Promise<string> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function callGroq(systemPrompt: string, userMessage: string, history: any[]): Promise<string> {
+    const messages = [
+        { role: 'system', content: systemPrompt },
+        ...history.map(m => ({
+            role: m.role === 'user' ? 'user' : 'assistant',
+            content: m.content
+        })),
+        { role: 'user', content: userMessage },
+    ];
+    
     const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
         headers: {
@@ -257,40 +273,68 @@ async function callGroq(systemPrompt: string, userMessage: string): Promise<stri
         },
         body: JSON.stringify({
             model: 'openai/gpt-oss-120b',
-            messages: [
-                { role: 'system', content: systemPrompt },
-                { role: 'user', content: userMessage },
-            ],
-            max_tokens: 500,
+            max_completion_tokens: 1024,
+            reasoning_effort: 'medium',
             temperature: 0.0,
+            messages: messages,
         }),
     });
     if (!res.ok) throw new Error(`Groq error: ${res.status}`);
     const data = await res.json();
     return data.choices[0].message.content;
 }
-// ── GEMINI FALLBACK ──────────────────────────────────────────
-async function callGemini(systemPrompt: string, userMessage: string): Promise<string> {
-    const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
-        {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [{ parts: [{ text: `${systemPrompt}\n\nUser: ${userMessage}` }] }],
-                generationConfig: { maxOutputTokens: 500, temperature: 0.0 },
-            }),
-        }
-    );
-    if (!res.ok) throw new Error(`Gemini error: ${res.status}`);
-    const data = await res.json();
-    return data.candidates[0].content.parts[0].text;
+// ── GEMINI PRIMARY ──────────────────────────────────────────
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function callGemini(systemPrompt: string, userMessage: string, history: any[]): Promise<string> {
+    const { GoogleGenerativeAI } = await import('@google/generative-ai');
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+    const model = genAI.getGenerativeModel({
+        model: 'gemini-2.0-flash',
+        systemInstruction: systemPrompt,
+    });
+
+    const chat = model.startChat({
+        history: history.map(m => ({
+            role: m.role === 'user' ? 'user' : 'model',
+            parts: [{ text: m.content }],
+        })),
+    });
+
+    const result = await chat.sendMessage(userMessage);
+    return result.response.text();
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function getAdaReply(systemPrompt: string, userMessage: string, conversationHistory: any[]): Promise<string> {
+  // PRIMARY — Gemini
+  try {
+    const reply = await callGemini(systemPrompt, userMessage, conversationHistory);
+    if (reply && reply.trim().length > 10) return reply;
+    throw new Error('Empty Gemini response');
+  } catch (geminiError) {
+    console.error('Gemini failed, falling back to Groq:', geminiError);
+  }
+
+  // FALLBACK — Groq
+  try {
+    const reply = await callGroq(systemPrompt, userMessage, conversationHistory);
+    if (reply && reply.trim().length > 10) return reply;
+    throw new Error('Empty Groq response');
+  } catch (groqError) {
+    console.error('Groq also failed:', groqError);
+  }
+
+  // LAST RESORT
+  return "I'm having trouble connecting right now. Please reach out to Anber directly at io@anber.me.";
+}
+
 // ── MAIN HANDLER ─────────────────────────────────────────────
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
         const userMessage = body.message;
+        const history = body.history || [];
+        
         // 1. Guardrail check
         const check = sanitizeInput(userMessage);
         if (!check.safe) {
@@ -329,14 +373,8 @@ export async function POST(req: NextRequest) {
         // 3. Build prompt
         const systemPrompt = buildSystemPrompt(contextBlock);
         
-        // 4. Try Groq, fallback to Gemini
-        let rawReply: string;
-        try {
-            rawReply = await callGroq(systemPrompt, userMessage);
-        } catch (groqErr) {
-            console.warn('Groq failed, falling back to Gemini:', groqErr);
-            rawReply = await callGemini(systemPrompt, userMessage);
-        }
+        // 4. Try Gemini, fallback to Groq
+        const rawReply = await getAdaReply(systemPrompt, userMessage, history);
         
         // Guard against empty responses
         if (!rawReply || rawReply.trim().length < 10) {

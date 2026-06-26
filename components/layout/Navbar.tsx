@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
 import { ThemeToggle } from "../shared/ThemeToggle";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
@@ -79,10 +78,8 @@ export function Navbar() {
                       {link.name}
                     </Link>
                     {isActive && (
-                      <motion.div
-                        layoutId="activeNavIndicator"
-                        className="absolute inset-0 bg-primary rounded-full z-10 shadow-md"
-                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      <div
+                        className="absolute inset-0 bg-primary rounded-full z-10 shadow-md animate-fade-in"
                       />
                     )}
                   </li>
@@ -128,54 +125,45 @@ export function Navbar() {
       </div>
 
       {/* Mobile Menu Overlay */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="lg:hidden overflow-hidden bg-background/95 backdrop-blur-xl border-b border-border shadow-lg"
-          >
-            <ul className="flex flex-col pt-4 pb-8 px-6 max-h-[80vh] overflow-y-auto">
-              {navLinks.map((link, index) => {
-                const isActive = pathname === link.path || (link.path !== "/" && pathname.startsWith(link.path));
-                return (
-                  <motion.li
-                    key={link.path}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.05 * index }}
-                    className="border-b border-border/50 last:border-0"
-                  >
-                    <Link
-                      href={link.path}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={cn(
-                        "flex items-center gap-4 py-4 text-lg font-medium tracking-tight transition-colors",
-                        isActive ? "text-primary" : "text-foreground hover:text-primary"
-                      )}
-                    >
-                      <div className={cn("p-2 rounded-lg", isActive ? "bg-primary/10" : "bg-muted")}>
-                        {link.icon}
-                      </div>
-                      {link.name}
-                    </Link>
-                  </motion.li>
-                );
-              })}
-              <motion.li
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.05 * navLinks.length }}
-                className="mt-6 flex justify-center pt-6 border-t border-border/50"
-              >
-                <ThemeToggle />
-              </motion.li>
-            </ul>
-          </motion.div>
+      <div
+        className={cn(
+          "lg:hidden overflow-hidden bg-background/95 backdrop-blur-xl border-b border-border shadow-lg transition-all duration-300 ease-in-out",
+          isMobileMenuOpen ? "max-h-[80vh] opacity-100" : "max-h-0 opacity-0 pointer-events-none"
         )}
-      </AnimatePresence>
+      >
+        <ul className="flex flex-col pt-4 pb-8 px-6 max-h-[80vh] overflow-y-auto">
+          {navLinks.map((link, index) => {
+            const isActive = pathname === link.path || (link.path !== "/" && pathname.startsWith(link.path));
+            return (
+              <li
+                key={link.path}
+                className={cn("border-b border-border/50 last:border-0", isMobileMenuOpen && "animate-fade-in")}
+                style={{ animationDelay: `${0.05 * index}s` }}
+              >
+                <Link
+                  href={link.path}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={cn(
+                    "flex items-center gap-4 py-4 text-lg font-medium tracking-tight transition-colors",
+                    isActive ? "text-primary" : "text-foreground hover:text-primary"
+                  )}
+                >
+                  <div className={cn("p-2 rounded-lg", isActive ? "bg-primary/10" : "bg-muted")}>
+                    {link.icon}
+                  </div>
+                  {link.name}
+                </Link>
+              </li>
+            );
+          })}
+          <li
+            className={cn("mt-6 flex justify-center pt-6 border-t border-border/50", isMobileMenuOpen && "animate-fade-in")}
+            style={{ animationDelay: `${0.05 * navLinks.length}s` }}
+          >
+            <ThemeToggle />
+          </li>
+        </ul>
+      </div>
     </header>
   );
 }

@@ -10,7 +10,7 @@ export default function PageLoader() {
 
   // Handle initial page load
   useEffect(() => {
-    const timer = setTimeout(() => setInitialLoad(false), 800);
+    const timer = setTimeout(() => setInitialLoad(false), 400);
     return () => clearTimeout(timer);
   }, []);
 

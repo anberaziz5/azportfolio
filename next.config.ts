@@ -8,6 +8,15 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
+        source: '/(.*)\\.(js|css|woff2|png|jpg|jpeg|webp|avif|svg|ico)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
         source: "/(.*)",
         headers: [
           {
@@ -40,15 +49,6 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
-          },
-        ],
-      },
-      {
-        source: "/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
             value: "public, max-age=0, must-revalidate",
           },
         ],
@@ -77,16 +77,17 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizeCss: true,
+    // @ts-ignore - explicitly requested by user despite Next.js 16 deprecating this key
+    browsersListForSwc: true,
     optimizePackageImports: [
       'lucide-react',
       'framer-motion',
+      'react-markdown',
       '@radix-ui/react-icons',
       'date-fns',
       'lodash',
       'react-icons'
     ],
-    // @ts-ignore - explicitly requested by user despite Next.js 16 deprecating this key
-    browsersListForSwc: true,
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",

@@ -11,6 +11,7 @@
   "dependencies": {
     "@ai-sdk/google": "^3.0.84",
     "@ai-sdk/openai": "^3.0.75",
+    "@google/generative-ai": "^0.24.1",
     "@paper-design/shaders-react": "^0.0.76",
     "@portabletext/react": "^6.2.0",
     "@sanity/image-url": "^2.1.1",
@@ -51,9 +52,20 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/three": "^0.184.1",
+    "critters": "^0.0.23",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "browserslist": {
+    "production": [
+      "last 2 Chrome versions",
+      "last 2 Firefox versions",
+      "last 2 Safari versions",
+      "last 2 Edge versions",
+      "not dead",
+      "not IE 11"
+    ]
   }
 }

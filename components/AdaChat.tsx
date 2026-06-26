@@ -1,7 +1,9 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
-import jsPDF from 'jspdf';
+import dynamic from 'next/dynamic';
+
+const ReactMarkdown = dynamic(() => import('react-markdown'), { ssr: false });
 
 type Message = { role: 'user' | 'ada'; text: string; timestamp?: Date };
 
@@ -233,8 +235,11 @@ export default function AdaChat() {
         }
     }
 
-    function downloadPDF() {
+    async function downloadPDF() {
+        if (messages.length === 0) return;
         try {
+            const jsPDFModule = await import('jspdf');
+            const jsPDF = jsPDFModule.default;
             const doc = new jsPDF();
             const dateStr = new Date().toISOString().split('T')[0];
             const timeStr = new Date().toLocaleString();
@@ -587,7 +592,40 @@ export default function AdaChat() {
                                         : 'bg-primary text-primary-foreground rounded-bl-sm'
                                         }`}
                                     >
-                                        {m.text}
+                                        {m.role === 'ada' ? (
+                                            <div className="prose prose-sm max-w-none dark:prose-invert text-inherit">
+                                                <ReactMarkdown
+                                                    components={{
+                                                        p: ({ children }) => (
+                                                            <p style={{ margin: '0 0 8px 0' }}>{children}</p>
+                                                        ),
+                                                        a: ({ href, children }) => (
+                                                            <a
+                                                                href={href}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                style={{ color: '#F6821F', textDecoration: 'underline' }}
+                                                            >
+                                                                {children}
+                                                            </a>
+                                                        ),
+                                                        ul: ({ children }) => (
+                                                            <ul style={{ paddingLeft: '16px', margin: '4px 0', listStyleType: 'disc' }}>{children}</ul>
+                                                        ),
+                                                        li: ({ children }) => (
+                                                            <li style={{ margin: '2px 0' }}>{children}</li>
+                                                        ),
+                                                        strong: ({ children }) => (
+                                                            <strong style={{ fontWeight: 600 }}>{children}</strong>
+                                                        ),
+                                                    }}
+                                                >
+                                                    {m.text}
+                                                </ReactMarkdown>
+                                            </div>
+                                        ) : (
+                                            m.text
+                                        )}
                                     </div>
                                     {m.timestamp && (
                                         <div className="text-[11px] text-muted-foreground mt-1.5 mx-1">
