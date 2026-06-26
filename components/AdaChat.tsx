@@ -50,6 +50,10 @@ export default function AdaChat() {
     const [showDownloadMenu, setShowDownloadMenu] = useState(false);
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
+    // Security State
+    const adversarialCount = useRef(0);
+    const [isBlocked, setIsBlocked] = useState(false);
+
     // Booking State
     const [bookingMode, setBookingMode] = useState(false);
     const [bookingStep, setBookingStep] = useState<number>(0);
@@ -180,7 +184,7 @@ export default function AdaChat() {
             const finalData = { ...bookingData, agenda: userMsg };
             setBookingData(finalData);
             
-            const confirmationText = `Got it! Here's a summary of your meeting request:\n\n👤 Name: ${finalData.name}\n📧 Email: ${finalData.email}\n📋 Agenda: ${finalData.agenda}\n\nSending this to Anber now — she'll reach out within 24 hours to confirm a time. Is there anything else I can help you with?`;
+            const confirmationText = `Perfect, ${finalData.name}! Here's your meeting request summary:\n\n👤 Name: ${finalData.name}\n📧 Email: ${finalData.email}  \n📋 Agenda: ${finalData.agenda}\n\nI've sent this to Anber and she'll reach out to you at ${finalData.email} within 24 hours to confirm a time. Is there anything else I can help you with?`;
             
             setMessages(prev => [...prev, { role: 'ada', text: confirmationText, timestamp: new Date() }]);
             setBookingMode(false);
@@ -322,7 +326,7 @@ export default function AdaChat() {
     }
 
     async function sendMessage() {
-        if (!input.trim() || loading) return;
+        if (!input.trim() || loading || isBlocked) return;
         const userMsg = input.trim();
         setInput('');
         setMessages(prev => [...prev, { role: 'user', text: userMsg, timestamp: new Date() }]);
@@ -333,23 +337,46 @@ export default function AdaChat() {
         }
 
         const bookingKeywords = [
-            'book a meeting',
-            'book a call',
-            'book an appointment',
-            'schedule a meeting',
-            'schedule a call',
-            'set up a meeting',
-            'arrange a meeting',
-            'i want to meet',
-            'i want to book',
-            'yes book',
-            'yes, book',
-            'help me book',
-            'book directly here',
+          // book variants
+          'book', 'booking',
+          // arrange variants
+          'arrange', 'arranging',
+          // schedule variants
+          'schedule', 'scheduling',
+          // meeting variants
+          'meeting', 'meet with', 'meet her', 'meet anber',
+          // appointment variants
+          'appointment',
+          // call variants
+          'set up a call', 'hop on a call', 'get on a call',
+          // consultation variants
+          'consultation', 'consult',
+          // yes responses to Ada's booking offer
+          'yes please', 'yes book', 'yes arrange', 'yes schedule',
+          'yes, book', 'yes, arrange', 'yes, schedule',
+          'yes, please',
+          'sure', 'go ahead', 'sounds good', 'let\'s do it',
+          'do it', 'okay', 'ok',
+          // direct intent
+          'i want to meet', 'i want to talk', 'i want to connect',
+          'want to discuss', 'want to chat with',
+          'can you book', 'can you arrange', 'can you schedule',
+          'help me book', 'help me arrange', 'help me schedule',
+          'directly here',
         ];
-        const triggersBooking = bookingKeywords.some(keyword =>
-            userMsg.toLowerCase().includes(keyword)
-        );
+
+        const userLower = userMsg.toLowerCase().trim();
+        const lastAdaMessage = messages.filter(m => m.role === 'ada').slice(-1)[0]?.text ?? '';
+        const adaOfferedBooking = [
+          'book a meeting', 'arrange a meeting', 'book directly here',
+          'would you like me to help you book', 'shall i help you book',
+          'book a consultation', 'schedule a meeting'
+        ].some(phrase => lastAdaMessage.toLowerCase().includes(phrase));
+
+        const isShortAffirmative = ['ok', 'okay', 'sure', 'yes', 'yeah', 'yep', 'sounds good', 'go ahead', 'do it'].includes(userLower);
+
+        const triggersBooking = bookingKeywords.some(k => userLower.includes(k)) &&
+          (!isShortAffirmative || adaOfferedBooking);
 
         if (triggersBooking) {
             startBookingFlow();
@@ -364,7 +391,32 @@ export default function AdaChat() {
                 body: JSON.stringify({ message: userMsg }),
             });
             const data = await res.json();
-            setMessages(prev => [...prev, { role: 'ada', text: data.reply, timestamp: new Date() }]);
+            const reply = data.reply;
+
+            const adaTriggerPhrase = 'would you like me to help you book a meeting with anber directly here';
+            if (reply.toLowerCase().includes(adaTriggerPhrase) && !bookingMode) {
+              // Do NOT auto-start booking — just make sure next user affirmative triggers it
+              // The adaOfferedBooking check in Fix 1 will handle this correctly
+            }
+
+            const refusalPhrases = [
+              "I can only answer questions about Anber",
+              "I'm not able to share internal details",
+              "I must politely decline",
+              "I must politely refuse",
+            ];
+
+            const isRefusal = refusalPhrases.some(phrase => reply.includes(phrase));
+            if (isRefusal) {
+              adversarialCount.current += 1;
+            }
+
+            if (adversarialCount.current >= 5) {
+              setIsBlocked(true);
+              setMessages(prev => [...prev, { role: 'ada', text: "This session has been flagged for unusual activity. Please reach out to Anber directly at io@anber.me if you have a genuine inquiry.", timestamp: new Date() }]);
+            } else {
+              setMessages(prev => [...prev, { role: 'ada', text: reply, timestamp: new Date() }]);
+            }
         } catch {
             setMessages(prev => [...prev, { role: 'ada', text: 'Something went wrong. Please try again.', timestamp: new Date() }]);
         } finally {
@@ -558,16 +610,17 @@ export default function AdaChat() {
                         <div className="p-3 border-t border-border bg-card shrink-0">
                             <div className="flex gap-2 relative">
                                 <input
-                                    className="flex-1 text-[14px] bg-background text-foreground border border-border rounded-lg pl-4 pr-12 py-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-muted-foreground shadow-sm"
-                                    placeholder="Ask Ada a question..."
+                                    className="flex-1 text-[14px] bg-background text-foreground border border-border rounded-lg pl-4 pr-12 py-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-muted-foreground shadow-sm disabled:opacity-50"
+                                    placeholder={isBlocked ? "Session blocked" : "Ask Ada a question..."}
                                     value={input}
                                     onChange={e => setInput(e.target.value)}
                                     onKeyDown={e => e.key === 'Enter' && sendMessage()}
                                     maxLength={500}
+                                    disabled={isBlocked}
                                 />
                                 <button
                                     onClick={sendMessage}
-                                    disabled={loading || !input.trim()}
+                                    disabled={loading || !input.trim() || isBlocked}
                                     className="absolute right-1.5 top-1.5 bottom-1.5 w-9 bg-primary text-primary-foreground rounded-md flex items-center justify-center disabled:opacity-50 hover:opacity-90 transition-opacity"
                                     aria-label="Send message"
                                 >
