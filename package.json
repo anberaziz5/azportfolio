@@ -22,6 +22,7 @@
     "@vercel/speed-insights": "^2.0.0",
     "ai": "^6.0.210",
     "clsx": "^2.1.1",
+    "core-js": "^3.49.0",
     "d3": "^7.9.0",
     "dotenv": "^17.4.2",
     "framer-motion": "^12.41.0",
