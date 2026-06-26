@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useInView } from "@/hooks/useInView";
 
 interface FadeInProps {
   children: React.ReactNode;
@@ -11,30 +11,36 @@ interface FadeInProps {
   duration?: number;
 }
 
-export function FadeInSection({ children, className, delay = 0, y = 20, x = 0, duration = 0.6 }: FadeInProps) {
+export function FadeInSection({ children, className = "", delay = 0, duration = 0.6 }: FadeInProps) {
+  const { ref, inView } = useInView({ rootMargin: "-50px" });
+  
   return (
-    <motion.section
-      initial={{ opacity: 0, y, x }}
-      whileInView={{ opacity: 1, y: 0, x: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration, delay }}
-      className={className}
+    <section
+      ref={ref}
+      style={{
+        animationDelay: `${delay}s`,
+        animationDuration: `${duration}s`,
+      }}
+      className={`${className} ${inView ? 'animate-fade-in-up' : 'opacity-0'}`}
     >
       {children}
-    </motion.section>
+    </section>
   );
 }
 
-export function FadeInDiv({ children, className, delay = 0, y = 20, x = 0, duration = 0.6 }: FadeInProps) {
+export function FadeInDiv({ children, className = "", delay = 0, duration = 0.6 }: FadeInProps) {
+  const { ref, inView } = useInView({ rootMargin: "-50px" });
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y, x }}
-      whileInView={{ opacity: 1, y: 0, x: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration, delay }}
-      className={className}
+    <div
+      ref={ref}
+      style={{
+        animationDelay: `${delay}s`,
+        animationDuration: `${duration}s`,
+      }}
+      className={`${className} ${inView ? 'animate-fade-in-up' : 'opacity-0'}`}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

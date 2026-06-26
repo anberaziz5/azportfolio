@@ -6,7 +6,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ThemeToggle } from "../shared/ThemeToggle";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { Home, User, Briefcase, Layers, PenTool, Mail, Sparkles } from "lucide-react";
+import Home from "lucide-react/dist/esm/icons/home";
+import User from "lucide-react/dist/esm/icons/user";
+import Briefcase from "lucide-react/dist/esm/icons/briefcase";
+import Layers from "lucide-react/dist/esm/icons/layers";
+import PenTool from "lucide-react/dist/esm/icons/pen-tool";
+import Mail from "lucide-react/dist/esm/icons/mail";
+import Sparkles from "lucide-react/dist/esm/icons/sparkles";
 
 const navLinks = [
   { name: "home", path: "/", icon: <Home className="w-5 h-5" /> },

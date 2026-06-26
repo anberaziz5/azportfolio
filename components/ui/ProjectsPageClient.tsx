@@ -4,7 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { projectsData, Project } from "@/lib/data/projects-data";
-import { ExternalLink, Code2 } from "lucide-react";
+import ExternalLink from "lucide-react/dist/esm/icons/external-link";
+import Code2 from "lucide-react/dist/esm/icons/code-2";
 import { FaGithub, FaGlobe } from "react-icons/fa";
 
 // Import all specific custom animations

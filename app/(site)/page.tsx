@@ -1,18 +1,73 @@
-import { HeroTorus } from "@/components/ui/HeroTorus";
-import { CTASection } from "@/components/ui/CTASection";
-import { ScheduleMeet } from "@/components/ui/ScheduleMeet";
-import { ProjectsSection } from "@/components/ui/ProjectsSection";
+"use client";
+
 import Link from "next/link";
-import { ArrowRight, Code2, Database, BrainCircuit, Globe2 } from "lucide-react";
-import { FadeInSection, FadeInDiv } from "@/components/shared/FadeIn";
+import dynamic from 'next/dynamic';
+import { useState, useEffect } from 'react';
+import { useInView } from "@/hooks/useInView";
+
+function LazySection({ children, minHeight }: { children: React.ReactNode, minHeight: string }) {
+  const { ref, inView } = useInView();
+  return (
+    <div ref={ref} style={{ minHeight: inView ? 'auto' : minHeight }}>
+      {inView ? children : null}
+    </div>
+  );
+}
+
+const HeroTorus = dynamic(
+  () => import("@/components/ui/HeroTorus").then(mod => mod.HeroTorus),
+  {
+    ssr: false,
+    loading: () => null,
+  }
+);
+
+const CapabilitiesSection = dynamic(
+  () => import("@/components/ui/CapabilitiesSection").then(mod => mod.CapabilitiesSection),
+  {
+    ssr: true,
+    loading: () => <div style={{ minHeight: '600px' }} aria-hidden="true" />
+  }
+);
+
+const ProjectsSection = dynamic(
+  () => import("@/components/ui/ProjectsSection").then(mod => mod.ProjectsSection),
+  {
+    ssr: true,
+    loading: () => <div style={{ minHeight: '800px' }} aria-hidden="true" />
+  }
+);
+
+const ScheduleMeet = dynamic(
+  () => import("@/components/ui/ScheduleMeet").then(mod => mod.ScheduleMeet),
+  {
+    ssr: true,
+    loading: () => <div style={{ minHeight: '400px' }} aria-hidden="true" />
+  }
+);
+
+const CTASection = dynamic(
+  () => import("@/components/ui/CTASection").then(mod => mod.CTASection),
+  {
+    ssr: true,
+    loading: () => <div style={{ minHeight: '300px' }} aria-hidden="true" />
+  }
+);
 
 export default function Home() {
+  const [showAnimation, setShowAnimation] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowAnimation(true), 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <FadeInSection className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-10">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-10">
         <div className="absolute top-0 left-0 w-full h-[100vh] z-0 pointer-events-none">
-          <HeroTorus />
+          {showAnimation && <HeroTorus />}
         </div>
 
         <div className="container relative z-10 mx-auto px-4 md:px-6 flex flex-col items-center justify-center text-center gap-8">
@@ -22,7 +77,7 @@ export default function Home() {
               Open to Fall 2027 MS/PhD Opportunities
             </div>
             
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tighter mb-6">
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tighter mb-6" style={{ opacity: 1 }}>
               AI Systems Engineer <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">
                 & Full-Stack Dev.
@@ -50,63 +105,23 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </FadeInSection>
+      </section>
 
-      {/* Capabilities Overview */}
-      <FadeInSection delay={0.2} y={30} className="py-24 bg-card/50 relative">
-        <div className="container mx-auto px-4 md:px-6 relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4">Core Capabilities</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto text-balance">
-              I specialize in bridging the gap between theoretical machine learning and applied software engineering.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                icon: <BrainCircuit className="w-8 h-8 text-primary" />,
-                title: "Applied AI & ML",
-                desc: "Designing RAG pipelines, training predictive models with XGBoost, and orchestrating multi-agent LLM systems."
-              },
-              {
-                icon: <Code2 className="w-8 h-8 text-primary" />,
-                title: "Full-Stack Dev",
-                desc: "Building highly interactive, responsive, and performance-optimized web applications using React and Next.js."
-              },
-              {
-                icon: <Database className="w-8 h-8 text-primary" />,
-                title: "Backend Systems",
-                desc: "Architecting resilient microservices, robust APIs with FastAPI/Node, and complex database schemas."
-              },
-              {
-                icon: <Globe2 className="w-8 h-8 text-primary" />,
-                title: "Edge & Cloud",
-                desc: "Deploying high-availability infrastructure on Vercel, Cloudflare Workers, and Hugging Face Spaces."
-              }
-            ].map((feature, idx) => (
-              <div key={idx} className="p-6 rounded-3xl bg-background border border-border shadow-sm hover:shadow-md transition-shadow group">
-                <div className="mb-4 inline-flex p-3 rounded-2xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-                <p className="text-muted-foreground text-sm">{feature.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </FadeInSection>
-
-      {/* CTA Section with Shaders */}
-      <FadeInDiv duration={0.8}>
+      {/* Capabilities Overview - First section after hero, so load normally per EXCEPTION */}
+      <CapabilitiesSection />
+      
+      {/* Below-fold content wrapped in LazySection */}
+      <LazySection minHeight="300px">
         <CTASection />
-      </FadeInDiv>
+      </LazySection>
 
-      {/* Projects Section (Sticky Scrolling) */}
-      <ProjectsSection />
+      <LazySection minHeight="800px">
+        <ProjectsSection />
+      </LazySection>
 
-      {/* Schedule a Meet Component (Adapted WaitlistHero) */}
-      <ScheduleMeet />
+      <LazySection minHeight="400px">
+        <ScheduleMeet />
+      </LazySection>
     </div>
   );
 }

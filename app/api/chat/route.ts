@@ -58,7 +58,7 @@ async function classifyInput(userMessage: string): Promise<'safe' | 'injection' 
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                model: 'llama3-8b-8192',
+                model: 'openai/gpt-oss-20b',
                 max_tokens: 10,
                 temperature: 0,
                 messages: [
@@ -213,7 +213,7 @@ async function callGroq(systemPrompt: string, userMessage: string): Promise<stri
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            model: 'llama-3.3-70b-versatile',
+            model: 'openai/gpt-oss-120b',
             messages: [
                 { role: 'system', content: systemPrompt },
                 { role: 'user', content: userMessage },

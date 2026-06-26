@@ -94,6 +94,8 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              loading="lazy"
+              quality={80}
             />
           </div>
         )

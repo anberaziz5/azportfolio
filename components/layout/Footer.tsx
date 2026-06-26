@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail } from "lucide-react";
+import Mail from "lucide-react/dist/esm/icons/mail";
 import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
 
 export function Footer() {

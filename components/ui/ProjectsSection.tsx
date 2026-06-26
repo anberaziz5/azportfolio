@@ -1,10 +1,27 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import ReactLenis from "lenis/react";
 import { useRef } from "react";
 import { projectsData, Project } from "@/lib/data/projects-data";
-import { Code2, ExternalLink, ArrowRight, Brain, Users, Network, Trees, Sparkles, TrendingUp, Map as MapIcon, Search, BookOpen, Database, Zap, Bot, FileCheck, Layers, Layout, FileCode2 } from "lucide-react";
+import Code2 from "lucide-react/dist/esm/icons/code-2";
+import ExternalLink from "lucide-react/dist/esm/icons/external-link";
+import ArrowRight from "lucide-react/dist/esm/icons/arrow-right";
+import Brain from "lucide-react/dist/esm/icons/brain";
+import Users from "lucide-react/dist/esm/icons/users";
+import Network from "lucide-react/dist/esm/icons/network";
+import Trees from "lucide-react/dist/esm/icons/trees";
+import Sparkles from "lucide-react/dist/esm/icons/sparkles";
+import TrendingUp from "lucide-react/dist/esm/icons/trending-up";
+import MapIcon from "lucide-react/dist/esm/icons/map";
+import Search from "lucide-react/dist/esm/icons/search";
+import BookOpen from "lucide-react/dist/esm/icons/book-open";
+import Database from "lucide-react/dist/esm/icons/database";
+import Zap from "lucide-react/dist/esm/icons/zap";
+import Bot from "lucide-react/dist/esm/icons/bot";
+import FileCheck from "lucide-react/dist/esm/icons/file-check";
+import Layers from "lucide-react/dist/esm/icons/layers";
+import Layout from "lucide-react/dist/esm/icons/layout";
+import FileCode2 from "lucide-react/dist/esm/icons/file-code-2";
 import { SiPython, SiReact, SiNodedotjs, SiMongodb, SiDocker, SiStreamlit, SiFastapi, SiGithub, SiFlask, SiVercel, SiDuckduckgo, SiCloudflare, SiSqlite, SiExpress, SiJavascript, SiCss } from "react-icons/si";
 import { FaGithub, FaGlobe } from "react-icons/fa";
 import Link from "next/link";
@@ -199,41 +216,39 @@ export const ProjectsSection = () => {
   });
 
   return (
-    <ReactLenis root>
-      <section className="bg-transparent pt-24 border-t border-border/50 relative z-10">
-        <div className="container mx-auto px-4 md:px-6 relative z-10 flex flex-col items-center">
-          <div className="text-center mb-24 max-w-2xl">
-            <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-4 uppercase">
-              System <span className="text-[#F38020]">Architectures</span>
-            </h2>
-            <p className="text-muted-foreground font-mono text-xs uppercase tracking-[0.2em]">
-              // End-To-End Machine Learning & Full-Stack Deployments
-            </p>
-          </div>
+    <section className="bg-transparent pt-24 border-t border-border/50 relative z-10">
+      <div className="container mx-auto px-4 md:px-6 relative z-10 flex flex-col items-center">
+        <div className="text-center mb-24 max-w-2xl">
+          <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-4 uppercase">
+            System <span className="text-[#F38020]">Architectures</span>
+          </h2>
+          <p className="text-muted-foreground font-mono text-xs uppercase tracking-[0.2em]">
+            // End-To-End Machine Learning & Full-Stack Deployments
+          </p>
         </div>
+      </div>
 
-        <main
-          ref={container}
-          className="relative flex w-full flex-col items-center justify-center 
-                       pb-[20vh] pt-[5vh] 
-                       sm:pb-[30vh] sm:pt-[8vh] 
-                       lg:pb-[40vh] lg:pt-[10vh]"
-        >
-          {projectsData.map((project, i) => {
-            const targetScale = Math.max(0.6, 1 - (projectsData.length - i - 1) * 0.05);
-            return (
-              <StickyProjectCard
-                key={project.id}
-                i={i}
-                project={project}
-                progress={scrollYProgress}
-                range={[i * (1 / projectsData.length), 1]}
-                targetScale={targetScale}
-              />
-            );
-          })}
-        </main>
-      </section>
-    </ReactLenis>
+      <main
+        ref={container}
+        className="relative flex w-full flex-col items-center justify-center 
+                     pb-[20vh] pt-[5vh] 
+                     sm:pb-[30vh] sm:pt-[8vh] 
+                     lg:pb-[40vh] lg:pt-[10vh]"
+      >
+        {projectsData.map((project, i) => {
+          const targetScale = Math.max(0.6, 1 - (projectsData.length - i - 1) * 0.05);
+          return (
+            <StickyProjectCard
+              key={project.id}
+              i={i}
+              project={project}
+              progress={scrollYProgress}
+              range={[i * (1 / projectsData.length), 1]}
+              targetScale={targetScale}
+            />
+          );
+        })}
+      </main>
+    </section>
   );
 };

@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: false,
+  compress: true,
+  poweredByHeader: false,
+  
   async headers() {
     return [
       {
@@ -33,13 +36,30 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Permissions-Policy",
-            value: "camera=(), microphone=(), geolocation=()",
+            value: "geolocation=()",
+          },
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=0, must-revalidate",
           },
         ],
       },
     ];
   },
   images: {
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [390, 768, 1024, 1280, 1920],
+    imageSizes: [16, 32, 64, 96, 128, 256],
+    minimumCacheTTL: 31536000,
     remotePatterns: [
       {
         protocol: "https",
@@ -54,6 +74,22 @@ const nextConfig: NextConfig = {
         hostname: "framerusercontent.com",
       },
     ],
+  },
+  experimental: {
+    optimizeCss: true,
+    optimizePackageImports: [
+      'lucide-react',
+      'framer-motion',
+      '@radix-ui/react-icons',
+      'date-fns',
+      'lodash',
+      'react-icons'
+    ],
+    // @ts-ignore - explicitly requested by user despite Next.js 16 deprecating this key
+    browsersListForSwc: true,
+  },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production",
   },
 };
 

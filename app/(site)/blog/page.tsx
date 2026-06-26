@@ -73,6 +73,9 @@ export default async function BlogPage() {
                       src={urlForImage(post.mainImage).url()} 
                       alt={post.mainImage.alt || post.title}
                       fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      loading="lazy"
+                      quality={80}
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>

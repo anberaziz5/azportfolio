@@ -198,7 +198,7 @@ export function AboutClient() {
 
               <div className="-mx-4 md:-mx-10 my-10">
                 <ContainerScroll>
-                  <img src="/about2.webp" alt="Anber Aziz working" className="w-full h-auto rounded-2xl" />
+                  <Image src="/about2.webp" alt="Anber Aziz working" width={600} height={400} className="w-full h-auto rounded-2xl" loading="lazy" quality={80} />
                 </ContainerScroll>
               </div>
 
@@ -213,7 +213,7 @@ export function AboutClient() {
 
               <div className="-mx-4 md:-mx-10 my-10">
                 <ContainerScroll>
-                  <img src="/about3.webp" alt="Anber Aziz presenting" className="w-full h-auto rounded-2xl" />
+                  <Image src="/about3.webp" alt="Anber Aziz presenting" width={600} height={400} className="w-full h-auto rounded-2xl" loading="lazy" quality={80} />
                 </ContainerScroll>
               </div>
             </div>
@@ -315,7 +315,7 @@ export function AboutClient() {
               style={{ filter: blur4, opacity: opacity4 }}
               className="relative w-full aspect-square rounded-full overflow-hidden shadow-2xl ring-4 ring-border/50"
             >
-              <Image src="/about4.webp" alt="Anber Aziz graduation" fill className="object-cover" />
+              <Image src="/about4.webp" alt="Anber Aziz graduation" fill className="object-cover" loading="lazy" quality={80} />
             </motion.div>
 
           </div>
@@ -349,7 +349,7 @@ export function AboutClient() {
                 transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                 className="absolute inset-0 z-20 bg-primary"
               />
-              <Image src="/about5.webp" alt="Anber Aziz workspace" fill className="object-cover object-top" />
+              <Image src="/about5.webp" alt="Anber Aziz workspace" fill className="object-cover object-top" loading="lazy" quality={80} />
             </div>
           </div>
         </div>

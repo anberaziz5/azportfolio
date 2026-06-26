@@ -2,7 +2,8 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { ExternalLink, CheckCircle } from "lucide-react";
+import ExternalLink from "lucide-react/dist/esm/icons/external-link";
+import CheckCircle from "lucide-react/dist/esm/icons/check-circle";
 import { FadeInSection } from "@/components/shared/FadeIn";
 
 export function CertificationsSection() {

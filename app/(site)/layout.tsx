@@ -1,24 +1,30 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "../globals.css";
+import dynamic from 'next/dynamic';
 import { ThemeProvider } from "@/components/ThemeProvider";
 import PageLoader from "@/components/PageLoader";
-import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { SVGScrollPath } from "@/components/shared/SVGScrollPath";
 import { PageTransition } from "@/components/shared/PageTransition";
-import { SparklesCore } from "@/components/ui/SparklesCore";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+
+
+import { LazySpeedInsights, LazySVGScrollPath, LazySparklesCore } from "@/components/shared/ClientLoaders";
 import AdaChat from "@/components/AdaChat";
+
+const Navbar = dynamic(() => import("@/components/layout/Navbar").then(mod => mod.Navbar), { ssr: true });
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
+  preload: true,
 });
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
   subsets: ["latin"],
+  display: "swap",
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -40,6 +46,11 @@ export default function RootLayout({
       className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://vitals.vercel-insights.com" />
+      </head>
       <body suppressHydrationWarning className="min-h-full flex flex-col font-sans transition-colors duration-300 relative overflow-x-hidden">
         <ThemeProvider
           attribute="class"
@@ -48,7 +59,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <div className="fixed inset-0 z-[-50] pointer-events-none">
-            <SparklesCore
+            <LazySparklesCore
               id="tsparticles-global"
               background="transparent"
               minSize={0.6}
@@ -59,13 +70,13 @@ export default function RootLayout({
             />
           </div>
           <PageLoader />
-          <SVGScrollPath />
+          <LazySVGScrollPath />
           <Navbar />
           <PageTransition>
             <main className="flex-grow flex flex-col">{children}</main>
           </PageTransition>
           <Footer />
-          <SpeedInsights />
+          <LazySpeedInsights />
         </ThemeProvider>
         <AdaChat />
       </body>
