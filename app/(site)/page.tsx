@@ -1,4 +1,4 @@
-import { RotatingEarth } from "@/components/ui/RotatingEarth";
+import { HeroTorus } from "@/components/ui/HeroTorus";
 import { CTASection } from "@/components/ui/CTASection";
 import { ScheduleMeet } from "@/components/ui/ScheduleMeet";
 import { ProjectsSection } from "@/components/ui/ProjectsSection";
@@ -11,8 +11,8 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
       <FadeInSection className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-10">
-        <div className="absolute inset-0 z-0 opacity-40 dark:opacity-20 flex items-center justify-center pointer-events-none">
-          <RotatingEarth width={800} height={800} className="w-[150%] md:w-[100%] h-auto max-w-none" />
+        <div className="absolute top-0 left-0 w-full h-[100vh] z-0 pointer-events-none">
+          <HeroTorus />
         </div>
 
         <div className="container relative z-10 mx-auto px-4 md:px-6 flex flex-col items-center justify-center text-center gap-8">

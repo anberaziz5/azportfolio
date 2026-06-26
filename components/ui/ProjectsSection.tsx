@@ -183,7 +183,7 @@ const StickyProjectCard = ({
             rel="noopener noreferrer"
             className="flex h-12 flex-1 items-center justify-center gap-2 rounded-lg bg-primary text-xs font-bold uppercase tracking-[0.1em] text-white transition-none hover:bg-[#F38020] hover:text-white shadow-lg shadow-primary/20"
           >
-            <FaGlobe className="h-4 w-4" aria-label="Website icon" /> Website
+            <FaGlobe className="h-4 w-4" aria-label="Website icon" /> View Live Deployment
           </Link>
         </div>
       </motion.div>

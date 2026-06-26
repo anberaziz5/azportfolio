@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { useState, Suspense, lazy } from "react";
 import Link from "next/link";
 
-const Dithering = lazy(() => 
+const Dithering = lazy(() =>
   import("@paper-design/shaders-react").then((mod) => ({ default: mod.Dithering }))
 );
 
@@ -13,7 +13,7 @@ export function CTASection() {
 
   return (
     <section className="py-24 w-full flex justify-center items-center px-4 md:px-6">
-      <div 
+      <div
         className="w-full max-w-7xl relative"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -34,7 +34,7 @@ export function CTASection() {
           </Suspense>
 
           <div className="relative z-10 px-6 max-w-4xl mx-auto text-center flex flex-col items-center">
-            
+
             <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary backdrop-blur-sm">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
@@ -47,13 +47,13 @@ export function CTASection() {
               Validated <br />
               <span className="text-foreground/60">Expertise.</span>
             </h2>
-            
+
             <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mb-12 leading-relaxed">
               Committed to continuous growth. From foundational IT support to advanced Data Science and AI system architecture.
             </p>
 
-            <Link href="/experience" className="group relative inline-flex h-14 items-center justify-center gap-3 overflow-hidden rounded-full bg-primary px-12 text-base font-medium text-primary-foreground transition-all duration-300 hover:bg-primary/90 hover:scale-105 active:scale-95 shadow-lg shadow-primary/20">
-              <span className="relative z-10">View Certifications</span>
+            <Link href="/about" className="group relative inline-flex h-14 items-center justify-center gap-3 overflow-hidden rounded-full bg-primary px-12 text-base font-medium text-primary-foreground transition-all duration-300 hover:bg-primary/90 hover:scale-105 active:scale-95 shadow-lg shadow-primary/20">
+              <span className="relative z-10">Learn More About Me</span>
               <ArrowRight className="h-5 w-5 relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>

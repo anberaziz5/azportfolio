@@ -29,6 +29,8 @@ export const projectsData: Project[] = [
     ],
     techStack: ["Python", "Machine Learning", "Role-Based Architecture", "React", "Node.js"],
     tags: ["ML/AI", "Research", "Full-Stack"],
+    githubUrl: "https://github.com/anberaziz5/cyberguard-platform",
+    liveUrl: "https://cyberguard.xcler.dev",
     featured: true
   },
   {
@@ -46,6 +48,8 @@ export const projectsData: Project[] = [
     ],
     techStack: ["Microservices", "Isolation Forest", "Gemini 2.5", "MongoDB", "React", "Docker"],
     tags: ["ML/AI", "Infrastructure", "Full-Stack"],
+    githubUrl: "https://github.com/anberaziz5/omni-node-ops",
+    liveUrl: "https://omninode.anber.me/",
     featured: true
   },
   {
@@ -63,6 +67,8 @@ export const projectsData: Project[] = [
     ],
     techStack: ["XGBoost", "Folium", "Gemini LLM", "Streamlit", "Python"],
     tags: ["ML/AI", "Research"],
+    githubUrl: "https://github.com/anberaziz5/supply-chain-nervous-system",
+    liveUrl: "https://logistics.anber.me/",
     featured: true
   },
   {
@@ -80,6 +86,8 @@ export const projectsData: Project[] = [
     ],
     techStack: ["RAG", "arXiv API", "Qdrant", "FastAPI", "React", "Groq"],
     tags: ["ML/AI", "Full-Stack", "Research"],
+    githubUrl: "https://github.com/anberaziz5/openscholar",
+    liveUrl: "https://scholar.anber.me/",
     featured: true
   },
   {
@@ -95,7 +103,9 @@ export const projectsData: Project[] = [
       "Fully containerized with Docker and deployed to Hugging Face Spaces as a persistent webhook listener operating continuously with zero downtime."
     ],
     techStack: ["FastAPI", "GitHub Webhooks", "Gemini 2.5 Flash", "Docker"],
-    tags: ["ML/AI", "Infrastructure", "Open Source"]
+    tags: ["ML/AI", "Infrastructure", "Open Source"],
+    githubUrl: "https://github.com/anberaziz5/ai-pr-reviewer",
+    liveUrl: "https://github.com/anberaziz5/ai-pr-reviewer"
   },
   {
     id: "resume-checker",
@@ -109,7 +119,9 @@ export const projectsData: Project[] = [
       "Deployed as a Vercel Serverless Function with automatic scaling and minimal cold start latency, serving both static frontend assets and the Python worker from a single vercel.json configuration."
     ],
     techStack: ["Python", "Flask", "Groq", "Llama 3.3", "Pydantic", "Vercel"],
-    tags: ["ML/AI", "Full-Stack"]
+    tags: ["ML/AI", "Full-Stack"],
+    githubUrl: "https://github.com/anberaziz5/ai-resume-checker",
+    liveUrl: "https://resumechecker.anber.me/"
   },
   {
     id: "multi-agent-researcher",
@@ -124,7 +136,9 @@ export const projectsData: Project[] = [
       "Hosted on Hugging Face Spaces as a Streamlit application with persistent containerized deployment."
     ],
     techStack: ["Google Gemini", "DuckDuckGo Search", "Streamlit", "Python"],
-    tags: ["ML/AI", "Research"]
+    tags: ["ML/AI", "Research"],
+    githubUrl: "https://github.com/anberaziz5/autonomous-agent-researcher",
+    liveUrl: "http://autonomous-agent-researcher.anber.me/"
   },
   {
     id: "synthtox-engine",
@@ -139,7 +153,9 @@ export const projectsData: Project[] = [
       "The final inference call runs at temperature 0.0 with a hard budget, forcing the model to output exactly one categorical triage token: SAFE, CAUTION, SEVERE, or UNKNOWN."
     ],
     techStack: ["Cloudflare Workers", "Groq", "Cloudflare Vectorize", "D1 SQLite", "Llama Models"],
-    tags: ["ML/AI", "Infrastructure"]
+    tags: ["ML/AI", "Infrastructure"],
+    githubUrl: "https://github.com/anberaziz5/synth-tox",
+    liveUrl: "https://synhttox.anber.me/"
   },
   {
     id: "feature-control",
@@ -153,7 +169,9 @@ export const projectsData: Project[] = [
       "Character-by-character search bar and environment category filters allow operations teams to isolate specific flags instantly during incident response scenarios."
     ],
     techStack: ["MERN Stack", "MongoDB", "Express", "React", "Node.js"],
-    tags: ["Full-Stack", "Infrastructure"]
+    tags: ["Full-Stack", "Infrastructure"],
+    githubUrl: "https://github.com/anberaziz5/feature-flag-platform",
+    liveUrl: "https://github.com/anberaziz5/feature-flag-platform"
   },
   {
     id: "hypewear",
@@ -167,6 +185,8 @@ export const projectsData: Project[] = [
       "Cart state management uses a localized reactive data model that dynamically computes aggregate pricing and conditional rendering without any external state library."
     ],
     techStack: ["Vanilla JS", "CSS3", "DOM API"],
-    tags: ["Full-Stack"]
+    tags: ["Full-Stack"],
+    githubUrl: "https://github.com/anberaziz5/hypewear",
+    liveUrl: "http://hypewear.anber.me/"
   }
 ];

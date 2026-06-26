@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "../globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { LoadingScreen } from "@/components/shared/LoadingScreen";
+import PageLoader from "@/components/PageLoader";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SVGScrollPath } from "@/components/shared/SVGScrollPath";
@@ -58,7 +58,7 @@ export default function RootLayout({
               particleColor="#F6821F"
             />
           </div>
-          <LoadingScreen />
+          <PageLoader />
           <SVGScrollPath />
           <Navbar />
           <PageTransition>

@@ -276,6 +276,7 @@ function ProjectCard({ project, index, onOpen }: { project: Project; index: numb
           <Link
             href={ghLink}
             target="_blank"
+            rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
             className="flex h-12 flex-1 items-center justify-center gap-2 rounded-lg bg-secondary text-xs font-bold uppercase tracking-[0.1em] text-secondary-foreground transition-colors hover:bg-[#F38020] hover:text-white shadow-sm"
           >
@@ -285,10 +286,11 @@ function ProjectCard({ project, index, onOpen }: { project: Project; index: numb
           <Link
             href={webLink}
             target="_blank"
+            rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
             className="flex h-12 flex-1 items-center justify-center gap-2 rounded-lg bg-primary text-xs font-bold uppercase tracking-[0.1em] text-white transition-colors hover:bg-[#F38020] hover:text-white shadow-lg shadow-primary/20"
           >
-            <FaGlobe className="h-4 w-4" /> Website
+            <FaGlobe className="h-4 w-4" /> View Live Deployment
           </Link>
         </div>
     </div>
@@ -359,11 +361,11 @@ function ProjectDrawer({ project, onClose }: { project: Project; onClose: () => 
 
               {/* Action Buttons */}
               <div className="flex gap-3 mt-8">
-                 <Link href={ghLink} target="_blank" className="flex-1 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider bg-secondary text-secondary-foreground hover:bg-[#F38020] hover:text-white h-12 rounded-lg transition-colors shadow-sm">
+                 <Link href={ghLink} target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider bg-secondary text-secondary-foreground hover:bg-[#F38020] hover:text-white h-12 rounded-lg transition-colors shadow-sm">
                    <FaGithub className="w-4 h-4" /> GitHub
                  </Link>
-                 <Link href={webLink} target="_blank" className="flex-1 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider bg-primary text-white hover:bg-[#F38020] hover:text-white h-12 rounded-lg transition-colors shadow-lg shadow-primary/20">
-                   <FaGlobe className="w-4 h-4" /> Website
+                 <Link href={webLink} target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider bg-primary text-white hover:bg-[#F38020] hover:text-white h-12 rounded-lg transition-colors shadow-lg shadow-primary/20">
+                   <FaGlobe className="w-4 h-4" /> View Live Deployment
                  </Link>
               </div>
            </div>
