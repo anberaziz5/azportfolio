@@ -28,6 +28,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.anber.me'),
   title: "Anber Aziz | AI Systems Engineer & Full-Stack Developer",
   description: "Portfolio of Anber Aziz. AI/ML Researcher & Full-Stack Engineer.",
   icons: {

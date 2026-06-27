@@ -1,14 +1,18 @@
 import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://anber.me';
-  
   return {
-    rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: ['/api/'],
-    },
-    sitemap: `${baseUrl}/sitemap.xml`,
+    rules: [
+      {
+        userAgent: '*',
+        allow: '/',
+        disallow: [
+          '/api/',        // never expose API routes
+          '/_next/',      // Next.js internals
+        ],
+      },
+    ],
+    sitemap: 'https://www.anber.me/sitemap.xml',
+    host: 'https://www.anber.me',
   };
 }
