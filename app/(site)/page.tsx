@@ -14,7 +14,10 @@ function LazySection({ children, minHeight }: { children: React.ReactNode, minHe
   );
 }
 
-import HeroRing from "@/components/HeroRing";
+const HeroTorus = dynamic(
+  () => import("@/components/ui/HeroTorus").then(mod => mod.HeroTorus),
+  { ssr: false, loading: () => null }
+);
 
 const CapabilitiesSection = dynamic(
   () => import("@/components/ui/CapabilitiesSection").then(mod => mod.CapabilitiesSection),
@@ -49,14 +52,19 @@ const CTASection = dynamic(
 );
 
 export default function Home() {
+  const [showTorus, setShowTorus] = useState(false);
 
+  useEffect(() => {
+    const timer = setTimeout(() => setShowTorus(true), 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-10">
         <div className="absolute top-0 left-0 w-full h-[100vh] z-0 pointer-events-none">
-          <HeroRing />
+          {showTorus && <HeroTorus />}
         </div>
 
         <div className="container relative z-10 mx-auto px-4 md:px-6 flex flex-col items-center justify-center text-center gap-8">

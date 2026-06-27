@@ -11,7 +11,6 @@ import Briefcase from "lucide-react/dist/esm/icons/briefcase";
 import Layers from "lucide-react/dist/esm/icons/layers";
 import PenTool from "lucide-react/dist/esm/icons/pen-tool";
 import Mail from "lucide-react/dist/esm/icons/mail";
-import Sparkles from "lucide-react/dist/esm/icons/sparkles";
 
 const navLinks = [
   { name: "home", path: "/", icon: <Home className="w-5 h-5" /> },
@@ -19,7 +18,6 @@ const navLinks = [
   { name: "projects", path: "/projects", icon: <Briefcase className="w-5 h-5" /> },
   { name: "services", path: "/services", icon: <Layers className="w-5 h-5" /> },
   { name: "blog", path: "/blog", icon: <PenTool className="w-5 h-5" /> },
-  { name: "my story", path: "/mystory", icon: <Sparkles className="w-5 h-5" /> },
   { name: "contact", path: "/contact", icon: <Mail className="w-5 h-5" /> },
 ];
 
