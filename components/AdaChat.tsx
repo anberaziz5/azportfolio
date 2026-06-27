@@ -456,7 +456,7 @@ export default function AdaChat() {
                         className="bg-transparent border-none p-0 outline-none transition-opacity cursor-pointer flex items-center justify-center"
                         aria-label="Toggle Chat"
                     >
-                        <Image src="/ada-mascot.svg" alt="Ada Mascot" width={160} height={160} className="w-[100px] sm:w-[160px] h-auto block" loading="lazy" />
+                        <Image src="/ada-mascot.svg" alt="Ada Mascot" width={160} height={160} className="w-[100px] sm:w-[160px] h-auto block" priority={true} />
                     </button>
                 </div>
             )}

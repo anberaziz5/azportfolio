@@ -47,6 +47,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <link rel="preload" as="image" href="/ada-mascot.svg" />
       </head>
       <body suppressHydrationWarning className="min-h-full flex flex-col font-sans transition-colors duration-300 relative overflow-x-hidden">
         <ThemeProvider

@@ -58,7 +58,8 @@ export default function Home() {
   const [showAnimation, setShowAnimation] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowAnimation(true), 2000);
+    // Only load Three.js animation after 3s to not block LCP
+    const timer = setTimeout(() => setShowAnimation(true), 3000);
     return () => clearTimeout(timer);
   }, []);
 
