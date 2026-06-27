@@ -36,7 +36,7 @@ export function Footer() {
                 <FaGithub size={20} aria-label="GitHub icon" />
                 <span className="sr-only">GitHub</span>
               </a>
-              <a href="https://linkedin.com/in/anber-aziz-70b028266" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="https://linkedin.com/in/anber-aziz" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                 <FaLinkedin size={20} aria-label="LinkedIn icon" />
                 <span className="sr-only">LinkedIn</span>
               </a>
@@ -44,7 +44,7 @@ export function Footer() {
                 <Mail size={20} aria-label="Email icon" />
                 <span className="sr-only">Email</span>
               </a>
-              
+
             </div>
           </div>
         </div>
