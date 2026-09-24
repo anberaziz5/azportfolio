@@ -5,6 +5,11 @@ import matter from "gray-matter";
 const BLOG_DIR = path.join(process.cwd(), "content", "blog");
 const SITE_URL = "https://www.anber.me";
 
+export interface BlogFaq {
+  question: string;
+  answer: string;
+}
+
 export interface BlogPostMeta {
   slug: string;
   title: string;
@@ -15,6 +20,7 @@ export interface BlogPostMeta {
   cover: string;
   coverAlt: string;
   heroComponent?: string;
+  faq: BlogFaq[];
 }
 
 export interface BlogPost extends BlogPostMeta {
@@ -44,6 +50,14 @@ function parsePost(filename: string): BlogPost {
     cover: String(data.cover ?? `/blog/${slug}.webp`),
     coverAlt: String(data.coverAlt ?? data.title ?? slug),
     heroComponent: data.heroComponent ? String(data.heroComponent) : undefined,
+    faq: Array.isArray(data.faq)
+      ? data.faq
+          .map((item: { question?: string; answer?: string }) => ({
+            question: String(item?.question ?? "").trim(),
+            answer: String(item?.answer ?? "").trim(),
+          }))
+          .filter((item: BlogFaq) => item.question && item.answer)
+      : [],
     content: content.trim(),
   };
 }

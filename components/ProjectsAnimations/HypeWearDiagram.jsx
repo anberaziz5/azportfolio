@@ -13,7 +13,7 @@ export default function HypeWearDiagram() {
     <div className="hwr-wrap">
       <style>{`
         .hwr-wrap {
-          position: relative; width: 100%; aspect-ratio: 16 / 9; min-height: 320px;
+          position: relative; width: 100%; height: 100%; aspect-ratio: 16 / 9;
           border-radius: 20px;
           background: radial-gradient(circle at 28% 18%, #1a1a1a 0%, #121212 55%, #0d0d0d 100%);
           border: 1px solid #2a2a2a;

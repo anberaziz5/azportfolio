@@ -20,6 +20,7 @@ import PortfolioDiagram from "@/components/ProjectsAnimations/PortfolioDiagram";
 import SupplyChainNervousSystemDiagram from "@/components/ProjectsAnimations/SupplyChainNervousSystemDiagram";
 import SynthToxDiagram from "@/components/ProjectsAnimations/SynthToxDiagram";
 import TaskManagerDiagram from "@/components/ProjectsAnimations/TaskManagerDiagram";
+import { ProjectVisual } from "@/components/ui/ProjectVisual";
 
 /* ─── DATA MAPPERS ───────────────────────────────────────────── */
 
@@ -236,12 +237,10 @@ function ProjectCard({ project, index, onOpen }: { project: Project; index: numb
       className="relative cursor-pointer overflow-hidden flex flex-col group bg-card sm:rounded-2xl shadow-2xl"
     >
       {/* Mini Animation Diagram inside Card Header */}
-      <div className="relative w-full h-[180px] sm:h-[220px] md:h-[250px] bg-background border-b border-border/50 overflow-hidden flex items-center justify-center pointer-events-none">
+      <div className="relative w-full aspect-video bg-background border-b border-border/50 overflow-hidden pointer-events-none">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(243,128,32,0.05)_0%,transparent_70%)] pointer-events-none z-10" />
-        <div className="absolute inset-0 flex items-center justify-center transform scale-[0.6] sm:scale-[0.7] md:scale-[0.8] origin-center dark:filter-none filter invert hue-rotate-180 contrast-125 saturate-150">
-          <div className="w-[100%]">
-             {getProjectAnimation(project.id)}
-          </div>
+        <div className="absolute inset-0 dark:filter-none filter invert hue-rotate-180 contrast-125 saturate-150">
+          <ProjectVisual>{getProjectAnimation(project.id)}</ProjectVisual>
         </div>
       </div>
 
@@ -372,10 +371,10 @@ function ProjectDrawer({ project, onClose }: { project: Project; onClose: () => 
            </div>
 
            {/* Full Animation Component display inside Drawer */}
-           <div className="w-full md:w-1/2 min-h-[250px] flex items-center justify-center p-4 bg-background/50 overflow-hidden relative">
+           <div className="relative w-full md:w-1/2 aspect-video md:min-h-full md:self-stretch bg-background/50 overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(243,128,32,0.05)_0%,transparent_70%)]" />
-              <div className="w-[120%] transform scale-[0.75] md:scale-[0.85] origin-center flex items-center justify-center pointer-events-none dark:filter-none filter invert hue-rotate-180 contrast-125 saturate-150">
-                 {getProjectAnimation(project.id)}
+              <div className="absolute inset-0 pointer-events-none dark:filter-none filter invert hue-rotate-180 contrast-125 saturate-150">
+                <ProjectVisual>{getProjectAnimation(project.id)}</ProjectVisual>
               </div>
            </div>
         </div>

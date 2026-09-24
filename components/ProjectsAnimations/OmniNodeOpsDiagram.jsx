@@ -12,7 +12,7 @@ export default function OmniNodeOpsDiagram() {
     <div className="ono-wrap">
       <style>{`
         .ono-wrap {
-          position: relative; width: 100%; aspect-ratio: 16 / 9; min-height: 320px;
+          position: relative; width: 100%; height: 100%; aspect-ratio: 16 / 9;
           border-radius: 20px;
           background: radial-gradient(circle at 28% 18%, #14181c 0%, #0a0d10 55%, #060808 100%);
           border: 1px solid #1f2629;

@@ -11,7 +11,7 @@ export default function TaskManagerDiagram() {
     <div className="tm-wrap">
       <style>{`
         .tm-wrap {
-          position: relative; width: 100%; aspect-ratio: 16 / 9; min-height: 320px;
+          position: relative; width: 100%; height: 100%; aspect-ratio: 16 / 9;
           border-radius: 20px;
           background: radial-gradient(circle at 28% 18%, #f8fafc 0%, #eef2ff 55%, #e6ebfb 100%);
           border: 1px solid #dde4f5;

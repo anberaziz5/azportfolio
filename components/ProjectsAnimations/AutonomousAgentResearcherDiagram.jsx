@@ -11,7 +11,7 @@ export default function AutonomousAgentResearcherDiagram() {
     <div className="age-wrap">
       <style>{`
         .age-wrap {
-          position: relative; width: 100%; aspect-ratio: 16 / 9; min-height: 320px;
+          position: relative; width: 100%; height: 100%; aspect-ratio: 16 / 9;
           border-radius: 20px;
           background: radial-gradient(circle at 28% 18%, #161233 0%, #0f0c24 55%, #0a0818 100%);
           border: 1px solid #231f4a;

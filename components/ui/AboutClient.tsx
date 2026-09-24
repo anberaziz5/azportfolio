@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 import Image from "next/image";
 import { FadeInSection } from "@/components/shared/FadeIn";
 import { ExperienceSection } from "@/components/ui/ExperienceSection";
@@ -46,93 +46,38 @@ const techStack = [
   { icon: SiGit, name: "Git" },
 ];
 
-export const ContainerScroll = ({
-  titleComponent,
-  children,
+function AboutPhoto({
+  src,
+  alt,
+  sizes,
+  className,
+  imgClassName,
+  priority = false,
 }: {
-  titleComponent?: React.ReactNode;
-  children: React.ReactNode;
-}) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => {
-      window.removeEventListener("resize", checkMobile);
-    };
-  }, []);
-
-  const scaleDimensions = () => {
-    return isMobile ? [0.8, 1] : [1.05, 1];
-  };
-
-  const rotate = useTransform(scrollYProgress, [0, 0.5], [20, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], scaleDimensions());
-  const translate = useTransform(scrollYProgress, [0, 0.5], [50, 0]);
-
+  src: string;
+  alt: string;
+  sizes: string;
+  className: string;
+  imgClassName?: string;
+  priority?: boolean;
+}) {
   return (
-    <div
-      className="h-[40rem] md:h-[60rem] flex items-center justify-center relative p-2 md:p-10 w-full"
-      ref={containerRef}
-    >
-      <div
-        className="w-full relative"
-        style={{
-          perspective: "1000px",
-        }}
-      >
-        {titleComponent && (
-          <motion.div
-            style={{ translateY: translate }}
-            className="max-w-5xl mx-auto text-center mb-8"
-          >
-            {titleComponent}
-          </motion.div>
-        )}
-        <motion.div
-          style={{
-            rotateX: rotate,
-            scale,
-            boxShadow:
-              "0 0 #0000004d, 0 9px 20px #0000004a, 0 37px 37px #00000042, 0 84px 50px #00000026, 0 149px 60px #0000000a, 0 233px 65px #00000003",
-          }}
-          className="max-w-5xl mx-auto w-full border-4 border-border/50 p-2 md:p-4 bg-card rounded-[30px] shadow-2xl"
-        >
-          <div className="w-full overflow-hidden rounded-2xl bg-muted relative">
-            {children}
-          </div>
-        </motion.div>
-      </div>
+    <div className={`relative overflow-hidden ${className}`}>
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        priority={priority}
+        quality={90}
+        sizes={sizes}
+        className={imgClassName ?? "object-cover"}
+      />
     </div>
   );
-};
+}
 
 export function AboutClient() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
-
-  // Image 1: Normal Entrance (Removed scroll offset to prevent invisibility)
-  // Replaced with Framer Motion initial/animate on the element directly.
-
-  // Image 4: Fade/Blur Out
-  const img4Ref = useRef(null);
-  const { scrollYProgress: scroll4 } = useScroll({ target: img4Ref, offset: ["start center", "end start"] });
-  const blur4 = useTransform(scroll4, [0, 1], ["blur(0px)", "blur(20px)"]);
-  const opacity4 = useTransform(scroll4, [0, 1], [1, 0]);
-
-  // Image 5: Mask Reveal (Bottom)
   const img5Ref = useRef(null);
   const isInView5 = useInView(img5Ref, { once: true, margin: "0px" });
 
@@ -140,15 +85,22 @@ export function AboutClient() {
     <div ref={containerRef} className="flex flex-col min-h-screen pb-24">
       {/* Hero Section */}
       <section className="relative min-h-[85vh] flex items-center overflow-hidden bg-card/50 border-b border-border">
-        {/* Absolute Background Image for Hero (Right Side, Big Size) */}
         <motion.div 
           initial={{ opacity: 0, x: 100 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
           className="absolute inset-0 lg:left-1/2 w-full lg:w-1/2 h-full z-0"
         >
-          <Image src="/about1.webp" alt="Anber Aziz portrait" fill className="object-cover object-top lg:object-center" priority sizes="(max-width: 1024px) 100vw, 50vw" />
-          <div className="absolute inset-0 bg-background/80 lg:bg-transparent lg:bg-gradient-to-r from-card/50 via-transparent to-transparent" />
+          <Image
+            src="/about1.webp"
+            alt="Anber Aziz portrait"
+            fill
+            priority
+            quality={90}
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="object-cover object-[center_18%] lg:object-[center_22%]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/55 to-background/15 lg:from-card/70 lg:via-transparent lg:to-transparent" />
         </motion.div>
 
         <div className="container mx-auto px-4 md:px-6 relative z-10 pt-32 pb-32 lg:py-0">
@@ -172,7 +124,7 @@ export function AboutClient() {
       <section className="py-24 bg-transparent">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-20">
-            <div className="md:col-span-5 lg:col-span-4">
+            <div className="md:col-span-5 lg:col-span-4 relative z-20">
               <div className="sticky top-32 space-y-8">
                 <FadeInSection>
                   <h2 className="text-3xl font-bold mb-6">The Journey</h2>
@@ -189,18 +141,20 @@ export function AboutClient() {
               </div>
             </div>
             
-            <div className="md:col-span-7 lg:col-span-8 space-y-12">
+            <div className="md:col-span-7 lg:col-span-8 space-y-12 relative z-10">
               <FadeInSection className="prose prose-lg dark:prose-invert max-w-none">
                 <p>
                 I am currently doing a Bachelor of Science in Software Engineering at Lahore College for Women University (LCWU) and planning to apply for MS and PhD programs in the United States for Fall 2027. My academic interests include improving the performance of machine learning systems, working with AI agents, and building reliable APIs and backend systems.
                 </p>
               </FadeInSection>
 
-              <div className="-mx-4 md:-mx-10 my-10">
-                <ContainerScroll>
-                  <Image src="/about2.webp" alt="Anber Aziz working" width={600} height={400} className="w-full h-auto rounded-2xl" loading="lazy" quality={80} />
-                </ContainerScroll>
-              </div>
+              <AboutPhoto
+                src="/about2.webp"
+                alt="Anber Aziz working at a desk"
+                sizes="(max-width: 768px) 100vw, 720px"
+                className="relative z-0 w-full aspect-[3/2] rounded-2xl ring-1 ring-border"
+                imgClassName="object-cover object-[center_22%]"
+              />
 
               <FadeInSection delay={0.2} className="prose prose-lg dark:prose-invert max-w-none">
                 <p>
@@ -211,11 +165,13 @@ export function AboutClient() {
                 </p>
               </FadeInSection>
 
-              <div className="-mx-4 md:-mx-10 my-10">
-                <ContainerScroll>
-                  <Image src="/about3.webp" alt="Anber Aziz presenting" width={600} height={400} className="w-full h-auto rounded-2xl" loading="lazy" quality={80} />
-                </ContainerScroll>
-              </div>
+              <AboutPhoto
+                src="/about3.webp"
+                alt="Anber Aziz walking in a city"
+                sizes="(max-width: 768px) 100vw, 420px"
+                className="relative z-0 mx-auto w-full max-w-md aspect-[2/3] rounded-2xl ring-1 ring-border"
+                imgClassName="object-cover object-top"
+              />
             </div>
           </div>
         </div>
@@ -262,7 +218,7 @@ export function AboutClient() {
       {/* Education Timeline */}
       <section className="py-24 bg-transparent">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
             
             <div className="space-y-12">
               <FadeInSection>
@@ -310,13 +266,13 @@ export function AboutClient() {
               </div>
             </div>
 
-            <motion.div 
-              ref={img4Ref}
-              style={{ filter: blur4, opacity: opacity4 }}
-              className="relative w-full aspect-square rounded-full overflow-hidden shadow-2xl ring-4 ring-border/50"
-            >
-              <Image src="/about4.webp" alt="Anber Aziz graduation" fill className="object-cover" loading="lazy" quality={80} />
-            </motion.div>
+            <AboutPhoto
+              src="/about4.webp"
+              alt="Anber Aziz presenting system architecture"
+              sizes="(max-width: 1024px) 100vw, 560px"
+              className="relative w-full aspect-[3/2] rounded-[2rem] overflow-hidden shadow-2xl ring-4 ring-border/50"
+              imgClassName="object-cover object-[32%_center]"
+            />
 
           </div>
         </div>
@@ -342,14 +298,21 @@ export function AboutClient() {
               </Link>
             </FadeInSection>
 
-            <div ref={img5Ref} className="w-full mt-16 relative aspect-video rounded-3xl overflow-hidden shadow-2xl">
+            <div ref={img5Ref} className="w-full mt-16 relative aspect-[5/4] rounded-3xl overflow-hidden shadow-2xl">
               <motion.div 
                 initial={{ x: "0%" }}
                 animate={isInView5 ? { x: "100%" } : { x: "0%" }}
                 transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                 className="absolute inset-0 z-20 bg-primary"
               />
-              <Image src="/about5.webp" alt="Anber Aziz workspace" fill className="object-cover object-top" loading="lazy" quality={80} />
+              <Image
+                src="/about5.webp"
+                alt="Anber Aziz working in a cafe"
+                fill
+                quality={90}
+                sizes="(max-width: 768px) 100vw, 768px"
+                className="object-cover object-[center_18%]"
+              />
             </div>
           </div>
         </div>

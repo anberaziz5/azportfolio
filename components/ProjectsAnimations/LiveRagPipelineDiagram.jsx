@@ -24,8 +24,8 @@ export default function LiveRagPipelineDiagram() {
         .osd-wrap {
           position: relative;
           width: 100%;
+          height: 100%;
           aspect-ratio: 16 / 9;
-          min-height: 320px;
           border-radius: 20px;
           background: radial-gradient(circle at 28% 18%, #fff8f1 0%, #fdeee3 45%, #fbe4d6 100%);
           border: 1px solid #f1d6c2;

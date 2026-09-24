@@ -12,7 +12,7 @@ export default function FeatureFlagPlatformDiagram() {
     <div className="ffp-wrap">
       <style>{`
         .ffp-wrap {
-          position: relative; width: 100%; aspect-ratio: 16 / 9; min-height: 320px;
+          position: relative; width: 100%; height: 100%; aspect-ratio: 16 / 9;
           border-radius: 20px;
           background: radial-gradient(circle at 28% 18%, #f9f7ff 0%, #f1ecff 55%, #e9e2ff 100%);
           border: 1px solid #ded3f7;

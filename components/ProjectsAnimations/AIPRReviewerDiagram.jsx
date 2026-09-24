@@ -10,7 +10,7 @@ export default function AIPRReviewerDiagram() {
     <div className="aipr-wrap">
       <style>{`
         .aipr-wrap {
-          position: relative; width: 100%; aspect-ratio: 16 / 9; min-height: 320px;
+          position: relative; width: 100%; height: 100%; aspect-ratio: 16 / 9;
           border-radius: 20px;
           background: radial-gradient(circle at 28% 18%, #161b22 0%, #0d1117 55%, #090c10 100%);
           border: 1px solid #21262d;

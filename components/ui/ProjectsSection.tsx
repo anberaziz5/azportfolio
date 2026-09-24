@@ -36,6 +36,7 @@ import PortfolioDiagram from "@/components/ProjectsAnimations/PortfolioDiagram";
 import SupplyChainNervousSystemDiagram from "@/components/ProjectsAnimations/SupplyChainNervousSystemDiagram";
 import SynthToxDiagram from "@/components/ProjectsAnimations/SynthToxDiagram";
 import TaskManagerDiagram from "@/components/ProjectsAnimations/TaskManagerDiagram";
+import { ProjectVisual } from "@/components/ui/ProjectVisual";
 
 const getProjectAnimation = (id: string) => {
   switch(id) {
@@ -153,13 +154,10 @@ const StickyProjectCard = ({
                    md:w-[600px] 
                    lg:w-[700px]"
       >
-        {/* Upper Side: Picture of the project (Component Animation) */}
-        <div className="relative flex h-[180px] sm:h-[220px] md:h-[250px] w-full shrink-0 items-center justify-center overflow-hidden bg-background border-b border-border/50">
+        <div className="relative w-full aspect-video shrink-0 overflow-hidden bg-background border-b border-border/50">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(243,128,32,0.05)_0%,transparent_70%)] pointer-events-none z-10" />
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-            <div className="w-[120%] sm:w-[100%] md:w-[90%] transform scale-[0.6] sm:scale-[0.7] md:scale-[0.75] lg:scale-[0.8] origin-center dark:filter-none filter invert hue-rotate-180 contrast-125 saturate-150">
-              {getProjectAnimation(project.id)}
-            </div>
+          <div className="absolute inset-0 pointer-events-none dark:filter-none filter invert hue-rotate-180 contrast-125 saturate-150">
+            <ProjectVisual>{getProjectAnimation(project.id)}</ProjectVisual>
           </div>
         </div>
 

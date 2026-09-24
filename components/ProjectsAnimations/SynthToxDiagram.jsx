@@ -12,7 +12,7 @@ export default function SynthToxDiagram() {
     <div className="stx-wrap">
       <style>{`
         .stx-wrap {
-          position: relative; width: 100%; aspect-ratio: 16 / 9; min-height: 320px;
+          position: relative; width: 100%; height: 100%; aspect-ratio: 16 / 9;
           border-radius: 20px;
           background: radial-gradient(circle at 28% 18%, #11161d 0%, #0a0e14 55%, #060809 100%);
           border: 1px solid #1c2329;

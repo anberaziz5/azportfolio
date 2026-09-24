@@ -12,7 +12,7 @@ export default function SupplyChainNervousSystemDiagram() {
     <div className="scn-wrap">
       <style>{`
         .scn-wrap {
-          position: relative; width: 100%; aspect-ratio: 16 / 9; min-height: 320px;
+          position: relative; width: 100%; height: 100%; aspect-ratio: 16 / 9;
           border-radius: 20px;
           background: radial-gradient(circle at 28% 18%, #181c1d 0%, #101314 55%, #0a0c0c 100%);
           border: 1px solid #232828;

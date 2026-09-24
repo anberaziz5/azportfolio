@@ -11,7 +11,7 @@ export default function AIResumeCheckerDiagram() {
     <div className="res-wrap">
       <style>{`
         .res-wrap {
-          position: relative; width: 100%; aspect-ratio: 16 / 9; min-height: 320px;
+          position: relative; width: 100%; height: 100%; aspect-ratio: 16 / 9;
           border-radius: 20px;
           background: radial-gradient(circle at 28% 18%, #1b2147 0%, #131a3a 55%, #0b0f24 100%);
           border: 1px solid #232b54;

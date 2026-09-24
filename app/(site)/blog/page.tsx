@@ -1,20 +1,20 @@
 import Link from "next/link";
-import Image from "next/image";
 import type { Metadata } from "next";
 import { FadeInDiv } from "@/components/shared/FadeIn";
-import FineTuningVsPromptingVsRAGDiagram from "@/components/blog/FineTuningVsPromptingVsRAGDiagram";
+import { BlogCover } from "@/components/blog/BlogCover";
 import { formatPostDate, getAllPosts, SITE_URL } from "@/lib/blog";
 
 export const metadata: Metadata = {
   title: "Blog | Anber Aziz",
   description:
-    "Engineering notes on AI systems, full-stack architecture, and production software by Anber Aziz.",
+    "Engineering notes on AI systems, Next.js, and production software by Anber Aziz, an AI engineer in Lahore, Pakistan.",
   keywords: [
-    "AI engineering",
-    "Next.js",
-    "full-stack",
+    "AI engineering Lahore",
+    "Next.js Pakistan",
+    "full-stack developer Lahore",
     "RAG",
     "software architecture",
+    "Anber Aziz blog",
   ],
   alternates: {
     canonical: `${SITE_URL}/blog`,
@@ -48,28 +48,6 @@ export const metadata: Metadata = {
   },
 };
 
-function HeroPreview({ component, cover, coverAlt, title }: { component?: string; cover: string; coverAlt: string; title: string }) {
-  if (component === "FineTuningVsPromptingVsRAGDiagram") {
-    return (
-      <div className="relative w-full h-48 mb-6 rounded-xl overflow-hidden bg-muted/20 border border-border">
-        <FineTuningVsPromptingVsRAGDiagram />
-      </div>
-    );
-  }
-
-  return (
-    <div className="relative w-full h-48 mb-6 rounded-xl overflow-hidden bg-muted/20">
-      <Image
-        src={cover}
-        alt={coverAlt || title}
-        fill
-        sizes="(max-width: 768px) 100vw, 50vw"
-        className="object-cover transition-transform duration-500 group-hover:scale-105"
-      />
-    </div>
-  );
-}
-
 export default function BlogPage() {
   const posts = getAllPosts();
   const jsonLd = {
@@ -81,6 +59,19 @@ export default function BlogPage() {
       "Engineering notes on AI systems, full-stack architecture, and production software by Anber Aziz.",
     author: {
       "@type": "Person",
+      name: "Anber Aziz",
+      url: SITE_URL,
+      jobTitle: "AI Systems Engineer",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Lahore",
+        addressRegion: "Punjab",
+        addressCountry: "PK",
+      },
+    },
+    inLanguage: "en",
+    isPartOf: {
+      "@type": "WebSite",
       name: "Anber Aziz",
       url: SITE_URL,
     },
@@ -122,11 +113,10 @@ export default function BlogPage() {
                 href={`/blog/${post.slug}`}
                 className="group p-8 bg-card rounded-[2rem] border border-border hover:border-primary/50 transition-colors shadow-sm hover:shadow-md flex flex-col overflow-hidden"
               >
-                <HeroPreview
-                  component={post.heroComponent}
-                  cover={post.cover}
-                  coverAlt={post.coverAlt}
-                  title={post.title}
+                <BlogCover
+                  src={post.cover}
+                  alt={post.coverAlt || post.title}
+                  className="mb-6 rounded-xl"
                 />
 
                 <div className="mb-6 flex flex-wrap gap-2">
