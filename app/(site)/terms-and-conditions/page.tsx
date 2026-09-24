@@ -25,7 +25,7 @@ export default function TermsAndConditionsPage() {
           Terms & <span className="text-[#F38020]">Conditions.</span>
         </h1>
         
-        <p className="text-muted-foreground mb-12">Last Updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
+        <p className="text-muted-foreground mb-12">Last Updated: June 24, 2026</p>
 
         <div className="prose prose-invert max-w-none space-y-8">
           <section className="p-6 md:p-8 rounded-2xl border border-border bg-card/30 backdrop-blur-sm">
@@ -79,7 +79,7 @@ export default function TermsAndConditionsPage() {
           <section className="p-6 md:p-8 rounded-2xl border border-border bg-card/30 backdrop-blur-sm">
             <h2 className="text-2xl font-bold tracking-tight mb-4 text-foreground">7. Contact Us</h2>
             <p className="text-muted-foreground leading-relaxed">
-              In order to resolve a complaint regarding the Site or to receive further information regarding use of the Site, please contact us at: <a href="mailto:anberaziz6@gmail.com" className="text-[#F38020] hover:underline">anberaziz6@gmail.com</a>.
+              In order to resolve a complaint regarding the Site or to receive further information regarding use of the Site, please contact us at: <a href="mailto:io@anber.me" className="text-[#F38020] hover:underline">io@anber.me</a>.
             </p>
           </section>
         </div>

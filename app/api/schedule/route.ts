@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { escapeHtml } from "@/lib/utils";
 
 const resend = new Resend(process.env.RESEND_API_KEY || "re_dummy_key_for_build");
 
@@ -23,9 +24,9 @@ export async function POST(req: Request) {
       replyTo: email,
       html: `
         <h2>New Meeting Request</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Requested Date & Time:</strong> ${new Date(datetime).toLocaleString()}</p>
+        <p><strong>Name:</strong> ${escapeHtml(name)}</p>
+        <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+        <p><strong>Requested Date & Time:</strong> ${escapeHtml(new Date(datetime).toLocaleString())}</p>
         <hr/>
         <p><em>This is an automated confirmation sent to both the portfolio owner and the visitor. Anber will get back to you to confirm the meeting details.</em></p>
       `,

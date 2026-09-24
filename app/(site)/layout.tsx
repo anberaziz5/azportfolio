@@ -76,8 +76,8 @@ export default function RootLayout({
           </PageTransition>
           <Footer />
           <LazySpeedInsights />
+          <AdaChat />
         </ThemeProvider>
-        <AdaChat />
       </body>
     </html>
   );

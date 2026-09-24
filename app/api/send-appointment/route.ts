@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { escapeHtml } from '@/lib/utils';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -31,16 +32,16 @@ export async function POST(req: Request) {
   </div>
 
   <div style="background: #f9f9f9; padding: 24px; border: 1px solid #eee; border-top: none;">
-    <p style="margin: 0 0 12px; font-size: 15px;"><strong>Name:</strong> ${name}</p>
-    <p style="margin: 0 0 12px; font-size: 15px;"><strong>Email:</strong> ${email}</p>
-    <p style="margin: 0 0 12px; font-size: 15px;"><strong>Submitted:</strong> ${submittedAt || new Date().toLocaleString()}</p>
+    <p style="margin: 0 0 12px; font-size: 15px;"><strong>Name:</strong> ${escapeHtml(name)}</p>
+    <p style="margin: 0 0 12px; font-size: 15px;"><strong>Email:</strong> ${escapeHtml(email)}</p>
+    <p style="margin: 0 0 12px; font-size: 15px;"><strong>Submitted:</strong> ${escapeHtml(submittedAt || new Date().toLocaleString())}</p>
     <hr style="border: none; border-top: 1px solid #ddd; margin: 16px 0;"/>
     <h2 style="font-size: 14px; color: #333; margin: 0 0 8px;">Meeting Agenda</h2>
-    <p style="font-size: 15px; color: #444; background: white; padding: 16px; border-radius: 6px; border: 1px solid #ddd; margin: 0;">${agenda}</p>
+    <p style="font-size: 15px; color: #444; background: white; padding: 16px; border-radius: 6px; border: 1px solid #ddd; margin: 0;">${escapeHtml(agenda)}</p>
   </div>
 
   <div style="padding: 16px; text-align: center; font-size: 12px; color: #999; border-top: 1px solid #eee;">
-    Reply directly to this email to respond to ${name} · Sent by Ada · anber.me
+    Reply directly to this email to respond to ${escapeHtml(name)} · Sent by Ada · anber.me
   </div>
 
 </div>

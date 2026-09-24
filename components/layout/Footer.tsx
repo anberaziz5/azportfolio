@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Mail from "lucide-react/dist/esm/icons/mail";
-import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 export function Footer() {
   return (
@@ -32,7 +32,7 @@ export function Footer() {
           <div className="text-center md:text-left flex flex-col items-center md:items-start">
             <h3 className="font-medium mb-4">Connect</h3>
             <div className="flex gap-4 justify-center md:justify-start">
-              <a href="https://github.com/AnberAziz5" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="https://github.com/anberaziz5" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                 <FaGithub size={20} aria-label="GitHub icon" />
                 <span className="sr-only">GitHub</span>
               </a>

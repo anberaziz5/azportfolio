@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { escapeHtml } from "@/lib/utils";
 
 const resend = new Resend(process.env.RESEND_API_KEY || "re_dummy_key_for_build");
 
@@ -40,28 +41,28 @@ export async function POST(req: Request) {
             <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
               <tr>
                 <td style="padding: 10px; border: 1px solid #333; color: #aaa;">Service</td>
-                <td style="padding: 10px; border: 1px solid #333; font-weight: bold;">${service}</td>
+                <td style="padding: 10px; border: 1px solid #333; font-weight: bold;">${escapeHtml(service)}</td>
               </tr>
               <tr>
                 <td style="padding: 10px; border: 1px solid #333; color: #aaa;">Name</td>
-                <td style="padding: 10px; border: 1px solid #333;">${name}</td>
+                <td style="padding: 10px; border: 1px solid #333;">${escapeHtml(name)}</td>
               </tr>
               <tr>
                 <td style="padding: 10px; border: 1px solid #333; color: #aaa;">Email</td>
-                <td style="padding: 10px; border: 1px solid #333;">${email}</td>
+                <td style="padding: 10px; border: 1px solid #333;">${escapeHtml(email)}</td>
               </tr>
               <tr>
                 <td style="padding: 10px; border: 1px solid #333; color: #aaa;">Phone</td>
-                <td style="padding: 10px; border: 1px solid #333;">${phone || "N/A"}</td>
+                <td style="padding: 10px; border: 1px solid #333;">${escapeHtml(phone || "N/A")}</td>
               </tr>
               <tr>
                 <td style="padding: 10px; border: 1px solid #333; color: #aaa;">Availability</td>
-                <td style="padding: 10px; border: 1px solid #333; color: #06d6a0;">${availability || "N/A"}</td>
+                <td style="padding: 10px; border: 1px solid #333; color: #06d6a0;">${escapeHtml(availability || "N/A")}</td>
               </tr>
             </table>
             <h3 style="margin-top: 30px; color: #F38020;">Project Scope & Requirements:</h3>
             <p style="padding: 15px; border-left: 3px solid #F38020; background: #111;">
-              ${requirements.replace(/\n/g, '<br>')}
+              ${escapeHtml(requirements).replace(/\n/g, '<br>')}
             </p>
           </div>
         `,
@@ -73,8 +74,8 @@ export async function POST(req: Request) {
         html: `
           <div style="font-family: sans-serif; color: #333; padding: 20px; max-width: 600px; margin: 0 auto; line-height: 1.6;">
             <h2 style="color: #000;">Request Transmitted</h2>
-            <p>Hi ${name},</p>
-            <p>This is an automated confirmation that we have successfully received your architecture request for <strong>${service}</strong>.</p>
+            <p>Hi ${escapeHtml(name)},</p>
+            <p>This is an automated confirmation that we have successfully received your architecture request for <strong>${escapeHtml(service)}</strong>.</p>
             <p>Our team is currently reviewing your project requirements. An architect will contact you shortly to lock in your availability slot.</p>
             <hr style="border: none; border-top: 1px solid #eaeaea; margin: 30px 0;" />
             <p style="font-size: 12px; color: #888;">This is an automated message. Please do not reply directly to this email.</p>

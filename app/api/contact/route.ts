@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { escapeHtml } from "@/lib/utils";
 
 const resend = new Resend(process.env.RESEND_API_KEY || "re_dummy_key_for_build");
 
@@ -31,10 +32,10 @@ export async function POST(req: Request) {
       subject: `New Contact Form Submission from ${name}`,
       replyTo: email,
       html: `
-        <h2>New Message from ${name}</h2>
-        <p><strong>Email:</strong> ${email}</p>
+        <h2>New Message from ${escapeHtml(name)}</h2>
+        <p><strong>Email:</strong> ${escapeHtml(email)}</p>
         <p><strong>Message:</strong></p>
-        <p>${message.replace(/\n/g, '<br>')}</p>
+        <p>${escapeHtml(message).replace(/\n/g, '<br>')}</p>
         <hr/>
         <p><em>This is an automated copy sent to both the portfolio owner and the visitor.</em></p>
       `,

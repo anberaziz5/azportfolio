@@ -53,7 +53,7 @@ export default defineType({
             },
             prepare(selection) {
               const count = selection.cells?.length || 0
-              return { title: `Row with \${count} cells` }
+              return { title: `Row with ${count} cells` }
             }
           }
         }),
@@ -66,7 +66,7 @@ export default defineType({
     },
     prepare(selection) {
       const count = selection.rows?.length || 0
-      return { title: `Table (\${count} rows)` }
+      return { title: `Table (${count} rows)` }
     }
   }
 })

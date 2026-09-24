@@ -187,6 +187,6 @@ export const projectsData: Project[] = [
     techStack: ["Vanilla JS", "CSS3", "DOM API"],
     tags: ["Full-Stack"],
     githubUrl: "https://github.com/anberaziz5/hypewear",
-    liveUrl: "http://hypewear.anber.me/"
+    liveUrl: "https://hypewear.anber.me/"
   }
 ];

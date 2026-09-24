@@ -25,13 +25,13 @@ export default function PrivacyPolicyPage() {
           Privacy <span className="text-[#F38020]">Policy.</span>
         </h1>
         
-        <p className="text-muted-foreground mb-12">Last Updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
+        <p className="text-muted-foreground mb-12">Last Updated: June 24, 2026</p>
 
         <div className="prose prose-invert max-w-none space-y-8">
           <section className="p-6 md:p-8 rounded-2xl border border-border bg-card/30 backdrop-blur-sm">
             <h2 className="text-2xl font-bold tracking-tight mb-4 text-foreground">1. Introduction</h2>
             <p className="text-muted-foreground leading-relaxed">
-              Welcome to the portfolio and professional services website of Anber Aziz ("we", "our", or "us"). We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about this privacy notice or our practices with regard to your personal information, please contact us at <a href="mailto:anberaziz6@gmail.com" className="text-[#F38020] hover:underline">anberaziz6@gmail.com</a>.
+              Welcome to the portfolio and professional services website of Anber Aziz ("we", "our", or "us"). We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about this privacy notice or our practices with regard to your personal information, please contact us at <a href="mailto:io@anber.me" className="text-[#F38020] hover:underline">io@anber.me</a>.
             </p>
             <p className="text-muted-foreground leading-relaxed mt-4">
               When you visit our website (https://anber.me) and use our services, you trust us with your personal information. We take your privacy very seriously. In this privacy notice, we describe our privacy policy. We seek to explain to you in the clearest way possible what information we collect, how we use it, and what rights you have in relation to it.
@@ -88,7 +88,7 @@ export default function PrivacyPolicyPage() {
           <section className="p-6 md:p-8 rounded-2xl border border-border bg-card/30 backdrop-blur-sm">
             <h2 className="text-2xl font-bold tracking-tight mb-4 text-foreground">6. Do California Residents Have Specific Privacy Rights?</h2>
             <p className="text-muted-foreground leading-relaxed">
-              Yes, if you are a resident of California, you are granted specific rights regarding access to your personal information under the California Consumer Privacy Act (CCPA). You have the right to request access to your personal information, request that your personal information be deleted, and request that your personal information not be sold. We do not sell your personal information. To exercise your rights, please contact us at <a href="mailto:anberaziz6@gmail.com" className="text-[#F38020] hover:underline">anberaziz6@gmail.com</a>.
+              Yes, if you are a resident of California, you are granted specific rights regarding access to your personal information under the California Consumer Privacy Act (CCPA). You have the right to request access to your personal information, request that your personal information be deleted, and request that your personal information not be sold. We do not sell your personal information. To exercise your rights, please contact us at <a href="mailto:io@anber.me" className="text-[#F38020] hover:underline">io@anber.me</a>.
             </p>
           </section>
         </div>

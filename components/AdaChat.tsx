@@ -393,10 +393,18 @@ export default function AdaChat() {
             const res = await fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: userMsg }),
+                body: JSON.stringify({
+                    message: userMsg,
+                    history: messages.map((m) => ({
+                        role: m.role === 'user' ? 'user' : 'assistant',
+                        content: m.text,
+                    })),
+                }),
             });
             const data = await res.json();
-            const reply = data.reply;
+            const reply = typeof data.reply === 'string' && data.reply.trim()
+                ? data.reply
+                : "I'm experiencing a brief technical issue. Please try again in a moment.";
 
             const adaTriggerPhrase = 'would you like me to help you book a meeting with anber directly here';
             if (reply.toLowerCase().includes(adaTriggerPhrase) && !bookingMode) {

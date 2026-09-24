@@ -42,9 +42,9 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     title,
     "author": author->name,
     mainImage,
-    publishedAt,
+    "publishedAt": coalesce(publishedAt, _createdAt),
     body,
-    "categories": categories[]
+    "categories": coalesce(keywords, [])
   }`;
   
   const post = await client.fetch(query, { slug: resolvedParams.slug });

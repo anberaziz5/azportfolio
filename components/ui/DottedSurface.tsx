@@ -3,6 +3,7 @@
 import { useTheme } from "next-themes";
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import { cn } from "@/lib/utils";
 
 type DottedSurfaceProps = Omit<React.ComponentProps<"div">, "ref">;
 
@@ -141,7 +142,7 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
   return (
     <div
       ref={containerRef}
-      className={`absolute inset-0 z-0 pointer-events-none \${className}`}
+      className={cn("absolute inset-0 z-0 pointer-events-none", className)}
       {...props}
     />
   );

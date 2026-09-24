@@ -132,12 +132,12 @@ export function CertificationsSection() {
               </div>
 
               <div className="flex flex-col gap-2 mt-auto">
-                <button className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-2.5 rounded-lg text-sm font-medium transition-all hover:brightness-110 active:scale-95" onClick={() => window.open('https://www.coursera.org', '_blank')}>
+                <button className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-2.5 rounded-lg text-sm font-medium transition-all hover:brightness-110 active:scale-95" onClick={() => window.open('https://www.coursera.org/professional-certificates/google-it-support', '_blank')}>
                   <CheckCircle className="w-4 h-4" /> Verify Credential
                 </button>
-                <button className="w-full flex items-center justify-center gap-2 bg-transparent text-foreground border border-border py-2.5 rounded-lg text-sm font-medium transition-all hover:bg-muted active:scale-95" onClick={() => console.log('Details: Google IT')}>
+                <a href="https://www.coursera.org/professional-certificates/google-it-support" target="_blank" rel="noopener noreferrer" className="w-full flex items-center justify-center gap-2 bg-transparent text-foreground border border-border py-2.5 rounded-lg text-sm font-medium transition-all hover:bg-muted active:scale-95">
                   <ExternalLink className="w-4 h-4" /> View Details
-                </button>
+                </a>
               </div>
             </div>
           </FadeInSection>
@@ -167,7 +167,7 @@ export function CertificationsSection() {
               </p>
 
               <div className="flex items-center justify-between border-t border-border pt-4 mb-6">
-                <span className="font-mono text-xs font-bold text-primary bg-primary/10 border border-primary/20 px-2 py-1 rounded">2026</span>
+                <span className="font-mono text-xs font-bold text-primary bg-primary/10 border border-primary/20 px-2 py-1 rounded">2024</span>
                 <div className="verify-ring">
                   <svg viewBox="0 0 32 32" fill="none">
                     <circle cx="16" cy="16" r="13" strokeWidth="2" className="ring-bg"/>
@@ -180,12 +180,12 @@ export function CertificationsSection() {
               </div>
 
               <div className="flex flex-col gap-2 mt-auto">
-                <button className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-2.5 rounded-lg text-sm font-medium transition-all hover:brightness-110 active:scale-95" onClick={() => window.open('https://www.coursera.org', '_blank')}>
+                <button className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-2.5 rounded-lg text-sm font-medium transition-all hover:brightness-110 active:scale-95" onClick={() => window.open('https://www.coursera.org/learn/data-analysis-with-python', '_blank')}>
                   <CheckCircle className="w-4 h-4" /> Verify Credential
                 </button>
-                <button className="w-full flex items-center justify-center gap-2 bg-transparent text-foreground border border-border py-2.5 rounded-lg text-sm font-medium transition-all hover:bg-muted active:scale-95" onClick={() => console.log('Details: IBM Python')}>
+                <a href="https://www.coursera.org/learn/data-analysis-with-python" target="_blank" rel="noopener noreferrer" className="w-full flex items-center justify-center gap-2 bg-transparent text-foreground border border-border py-2.5 rounded-lg text-sm font-medium transition-all hover:bg-muted active:scale-95">
                   <ExternalLink className="w-4 h-4" /> View Details
-                </button>
+                </a>
               </div>
             </div>
           </FadeInSection>
@@ -215,7 +215,7 @@ export function CertificationsSection() {
               </p>
 
               <div className="flex items-center justify-between border-t border-border pt-4 mb-6">
-                <span className="font-mono text-xs font-bold text-primary bg-primary/10 border border-primary/20 px-2 py-1 rounded">2026</span>
+                <span className="font-mono text-xs font-bold text-primary bg-primary/10 border border-primary/20 px-2 py-1 rounded">2024</span>
                 <div className="verify-ring">
                   <svg viewBox="0 0 32 32" fill="none">
                     <circle cx="16" cy="16" r="13" strokeWidth="2" className="ring-bg"/>
@@ -228,12 +228,12 @@ export function CertificationsSection() {
               </div>
 
               <div className="flex flex-col gap-2 mt-auto">
-                <button className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-2.5 rounded-lg text-sm font-medium transition-all hover:brightness-110 active:scale-95" onClick={() => window.open('https://www.coursera.org', '_blank')}>
+                <button className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-2.5 rounded-lg text-sm font-medium transition-all hover:brightness-110 active:scale-95" onClick={() => window.open('https://www.coursera.org/learn/python-for-data-visualization', '_blank')}>
                   <CheckCircle className="w-4 h-4" /> Verify Credential
                 </button>
-                <button className="w-full flex items-center justify-center gap-2 bg-transparent text-foreground border border-border py-2.5 rounded-lg text-sm font-medium transition-all hover:bg-muted active:scale-95" onClick={() => console.log('Details: IBM Vis')}>
+                <a href="https://www.coursera.org/learn/python-for-data-visualization" target="_blank" rel="noopener noreferrer" className="w-full flex items-center justify-center gap-2 bg-transparent text-foreground border border-border py-2.5 rounded-lg text-sm font-medium transition-all hover:bg-muted active:scale-95">
                   <ExternalLink className="w-4 h-4" /> View Details
-                </button>
+                </a>
               </div>
             </div>
           </FadeInSection>

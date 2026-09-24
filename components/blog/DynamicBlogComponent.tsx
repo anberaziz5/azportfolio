@@ -11,7 +11,7 @@ export function DynamicBlogComponent({ componentName }: { componentName: string 
       dynamic(
         () =>
           import(`@/components/blog/${componentName}`).catch((err) => {
-            console.error(`Dynamic component "\${componentName}" failed to load.`, err);
+            console.error(`Dynamic component "${componentName}" failed to load.`, err);
             return () => (
               <div className="w-full h-full flex flex-col items-center justify-center bg-red-500/10 text-red-500 border border-red-500/20 p-4 text-center rounded-xl">
                 <span className="font-bold">Component Error</span>

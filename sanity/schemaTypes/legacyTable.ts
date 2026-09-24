@@ -30,7 +30,7 @@ export default defineType({
     },
     prepare(selection) {
       const count = selection.rows?.length || 0
-      return { title: `Legacy Table (\${count} rows) - Please replace with Rich Text Table` }
+      return { title: `Legacy Table (${count} rows) - Please replace with Rich Text Table` }
     }
   }
 })

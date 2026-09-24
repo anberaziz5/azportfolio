@@ -1,13 +1,23 @@
 import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
+dotenv.config({ path: '.env' });
 
 import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import ws from 'ws';
 import { createClient } from '@supabase/supabase-js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const kbPath = path.join(__dirname, '..', 'KnowledgeBase', 'anber_rag_knowledge_base.md');
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
 const JINA_API_KEY = process.env.JINA_API_KEY;
+
+if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY || !JINA_API_KEY) {
+    throw new Error('Missing SUPABASE_URL, SUPABASE_SERVICE_KEY, or JINA_API_KEY');
+}
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
     realtime: { transport: ws }
@@ -24,7 +34,7 @@ function chunkText(text, chunkSize = 500, overlap = 80) {
     return chunks;
 }
 
-const rawText = fs.readFileSync('./knowledgebase/anber_rag_knowledge_base.md', 'utf8');
+const rawText = fs.readFileSync(kbPath, 'utf8');
 const chunks = chunkText(rawText);
 console.log(`Total chunks: ${chunks.length}`);
 
@@ -70,7 +80,7 @@ async function ingest() {
             console.error(`Failed on chunk ${i}:`, err.message);
         }
     }
-    console.log('✅ Ingestion complete!');
+    console.log('Ingestion complete!');
 }
 
 ingest();

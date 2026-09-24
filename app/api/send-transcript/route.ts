@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { escapeHtml } from '@/lib/utils';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -17,12 +18,13 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
         }
 
-        const messagesHtml = messages.map((m: any) => `
+        const safeName = escapeHtml(visitorName);
+        const messagesHtml = messages.map((m: { timestamp?: string; role?: string; content?: string }) => `
       <div style="margin-bottom: 16px;">
-        <p style="margin: 0 0 4px; font-size: 12px; color: #888;">${new Date(m.timestamp).toLocaleTimeString()}</p>
+        <p style="margin: 0 0 4px; font-size: 12px; color: #888;">${escapeHtml(new Date(m.timestamp || Date.now()).toLocaleTimeString())}</p>
         <p style="margin: 0; font-size: 14px;">
-          <strong style="color: ${m.role === 'ada' ? '#F6821F' : '#333'};">${m.role === 'ada' ? 'Ada' : visitorName}:</strong>
-          ${m.content}
+          <strong style="color: ${m.role === 'ada' ? '#F6821F' : '#333'};">${m.role === 'ada' ? 'Ada' : safeName}:</strong>
+          ${escapeHtml(m.content)}
         </p>
       </div>
         `).join('');
@@ -37,9 +39,9 @@ export async function POST(req: Request) {
   
     <div style="background: #f9f9f9; padding: 20px; border: 1px solid #eee;">
       <h2 style="font-size: 14px; color: #333; margin: 0 0 4px;">Visitor Details</h2>
-      <p style="margin: 4px 0; font-size: 14px;"><strong>Name:</strong> ${visitorName}</p>
-      <p style="margin: 4px 0; font-size: 14px;"><strong>Email:</strong> ${visitorEmail}</p>
-      <p style="margin: 4px 0; font-size: 14px;"><strong>Date:</strong> ${chatDate}</p>
+      <p style="margin: 4px 0; font-size: 14px;"><strong>Name:</strong> ${safeName}</p>
+      <p style="margin: 4px 0; font-size: 14px;"><strong>Email:</strong> ${escapeHtml(visitorEmail)}</p>
+      <p style="margin: 4px 0; font-size: 14px;"><strong>Date:</strong> ${escapeHtml(chatDate)}</p>
       <p style="margin: 4px 0; font-size: 14px;"><strong>Messages:</strong> ${messages.length}</p>
     </div>
   

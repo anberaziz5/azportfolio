@@ -1,8 +1,15 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+require("dotenv").config({ path: ".env.local" });
+require("dotenv").config({ path: ".env" });
 const { MongoClient } = require("mongodb");
 
-// 1. Update this to your local or live MongoDB URI connection string
-const uri = "mongodb+srv://devuser:medevuser@cluster0.bexhohy.mongodb.net/portfolio?retryWrites=true&w=majority";
+const uri = process.env.MONGODB_URI;
 const dbName = "portfolio";
+
+if (!uri) {
+  console.error("Missing MONGODB_URI. Set it in .env or .env.local before seeding.");
+  process.exit(1);
+}
 
 const storiesData = [
   {

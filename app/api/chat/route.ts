@@ -175,6 +175,20 @@ async function embedQuery(text: string): Promise<number[]> {
     return data.data[0].embedding;
 }
 
+function normalizeHistory(history: { role?: string; content?: string }[] | undefined) {
+    const mapped = (Array.isArray(history) ? history : [])
+        .filter((m) => m && typeof m.content === 'string' && m.content.trim().length > 0)
+        .map((m) => ({
+            role: m.role === 'user' ? 'user' : 'assistant',
+            content: m.content as string,
+        }));
+
+    const recent = mapped.slice(-12);
+    const firstUser = recent.findIndex((m) => m.role === 'user');
+    if (firstUser === -1) return [];
+    return recent.slice(firstUser);
+}
+
 // ── RETRIEVE CHUNKS ─────────────────────────────────────────
 async function retrieveChunks(queryEmbedding: number[]): Promise<{ content: string; similarity: number }[]> {
     const { data, error } = await supabase.rpc('match_chunks', {
@@ -287,7 +301,8 @@ async function callGroq(systemPrompt: string, userMessage: string, history: any[
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function callGemini(systemPrompt: string, userMessage: string, history: any[]): Promise<string> {
     const { GoogleGenerativeAI } = await import('@google/generative-ai');
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+    const geminiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+    const genAI = new GoogleGenerativeAI(geminiKey!);
     const model = genAI.getGenerativeModel({
         model: 'gemini-2.0-flash',
         systemInstruction: systemPrompt,
@@ -333,7 +348,7 @@ export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
         const userMessage = body.message;
-        const history = body.history || [];
+        const history = normalizeHistory(body.history);
         
         // 1. Guardrail check
         const check = sanitizeInput(userMessage);

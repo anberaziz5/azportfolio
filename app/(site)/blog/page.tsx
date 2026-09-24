@@ -20,9 +20,9 @@ async function getPosts() {
     slug,
     mainImage,
     mainComponent,
-    publishedAt,
+    "publishedAt": coalesce(publishedAt, _createdAt),
     metaDescription,
-    "categories": categories[]
+    "categories": coalesce(keywords, [])
   }`;
   
   try {

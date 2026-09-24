@@ -9,14 +9,10 @@ const nextConfig = {
 
   experimental: {
     optimizeCss: true,
-    browsersListForSwc: true,
     optimizePackageImports: [
       'lucide-react',
       'framer-motion',
       'react-markdown',
-      '@radix-ui/react-icons',
-      'date-fns',
-      'lodash',
     ],
   },
 
