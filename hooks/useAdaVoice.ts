@@ -5,7 +5,7 @@ function pickMime(): string {
   return types.find((t) => typeof MediaRecorder !== "undefined" && MediaRecorder.isTypeSupported(t)) || "";
 }
 
-function rms(analyser: AnalyserNode, buf: Uint8Array): number {
+function rms(analyser: AnalyserNode, buf: Uint8Array<ArrayBuffer>): number {
   analyser.getByteTimeDomainData(buf);
   let sum = 0;
   for (let i = 0; i < buf.length; i++) {
@@ -208,7 +208,7 @@ export function useAdaVoice() {
     const analyser = ctx.createAnalyser();
     analyser.fftSize = 2048;
     source.connect(analyser);
-    const buf = new Uint8Array(analyser.fftSize);
+    const buf: Uint8Array<ArrayBuffer> = new Uint8Array(analyser.fftSize);
     let heard = false;
     let silentMs = 0;
     const started = Date.now();
