@@ -21,6 +21,7 @@ async function groqChatRequest(
   history: ChatTurn[],
   maxTokens: number
 ): Promise<ReadableStream<Uint8Array>> {
+  const qwen = model.includes("qwen");
   const res = await fetch(`${GROQ}/chat/completions`, {
     method: "POST",
     headers: {
@@ -29,16 +30,17 @@ async function groqChatRequest(
     },
     body: JSON.stringify({
       model,
-      temperature: 0.2,
+      temperature: qwen ? 0.4 : 0.2,
       max_completion_tokens: maxTokens,
       stream: true,
+      ...(qwen ? { reasoning_effort: "none" } : {}),
       messages: [
         { role: "system", content: systemPrompt },
         ...history.slice(-8),
         { role: "user", content: userMessage },
       ],
     }),
-    signal: AbortSignal.timeout(8000),
+    signal: AbortSignal.timeout(6000),
   });
 
   if (!res.ok || !res.body) {
@@ -64,9 +66,10 @@ export async function groqChatStream(
       opts.maxTokens
     );
   } catch (err) {
-    const message = err instanceof Error ? err.message : "";
-    if (!/503|429|over capacity|timeout/i.test(message)) throw err;
-    console.warn("Primary Groq model unavailable, falling back:", message.slice(0, 120));
+    console.warn(
+      "Primary Groq model unavailable, falling back:",
+      err instanceof Error ? err.message.slice(0, 160) : err
+    );
     return groqChatRequest(
       GROQ_CHAT_FALLBACK_MODEL,
       systemPrompt,
@@ -81,6 +84,35 @@ export async function* readGroqContent(stream: ReadableStream<Uint8Array>) {
   const reader = stream.getReader();
   const decoder = new TextDecoder();
   let buffer = "";
+  let pending = "";
+  let hidingThink = false;
+
+  const flushVisible = function* (chunk: string): Generator<string> {
+    pending += chunk;
+    while (pending.length) {
+      if (hidingThink) {
+        const end = pending.search(/<\/think>/i);
+        if (end === -1) {
+          pending = pending.slice(-16);
+          return;
+        }
+        pending = pending.slice(end + 8);
+        hidingThink = false;
+        continue;
+      }
+      const start = pending.search(/<think>/i);
+      if (start === -1) {
+        const hold = Math.min(16, pending.length);
+        const emit = pending.slice(0, pending.length - hold);
+        pending = pending.slice(pending.length - hold);
+        if (emit) yield emit;
+        return;
+      }
+      if (start > 0) yield pending.slice(0, start);
+      pending = pending.slice(start + 7);
+      hidingThink = true;
+    }
+  };
 
   while (true) {
     const { done, value } = await reader.read();
@@ -96,15 +128,17 @@ export async function* readGroqContent(stream: ReadableStream<Uint8Array>) {
       if (!payload || payload === "[DONE]") continue;
       try {
         const json = JSON.parse(payload) as {
-          choices?: { delta?: { content?: string } }[];
+          choices?: { delta?: { content?: string; reasoning?: string } }[];
         };
         const piece = json.choices?.[0]?.delta?.content;
-        if (piece) yield piece;
+        if (piece) yield* flushVisible(piece);
       } catch {
         // ignore keepalives / partial JSON
       }
     }
   }
+
+  if (!hidingThink && pending.trim()) yield pending;
 }
 
 export async function groqTranscribe(file: Blob, filename: string): Promise<string> {

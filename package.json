@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/generate-blog-covers.mjs",
+    "prebuild": "node scripts/bundle-kb.mjs && node scripts/generate-blog-covers.mjs",
+    "kb:bundle": "node scripts/bundle-kb.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",

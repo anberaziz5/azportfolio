@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { createClient } from "@supabase/supabase-js";
+import { KB_MARKDOWN } from "@/lib/ada/kb-markdown";
 
 const KB_PATH = path.join(process.cwd(), "KnowledgeBase", "anber_rag_knowledge_base.md");
 const SKIP_SECTIONS = new Set(["01", "13", "14"]);
@@ -10,9 +11,21 @@ const STOP = new Set([
   "who", "does", "did", "any", "all", "tell", "me", "please", "just",
 ]);
 
-const SIMILARITY_THRESHOLD = 0.38;
-const VECTOR_TIMEOUT_MS = 850;
+const SIMILARITY_THRESHOLD = 0.45;
+const VECTOR_TIMEOUT_MS = 280;
 const EMBED_MODEL = "jina-embeddings-v2-base-en";
+const POLICY_NOISE = /zero-hallucination|must not do|not covered by this knowledge base|response protocol|intent triggers/i;
+
+export const CORE_FACTS = `ANBER AZIZ — verified facts Ada must use:
+- Full name: Anber Aziz. Woman. AI/ML and full-stack software engineer from Kaisar Garh, Kasur, Punjab, Pakistan. Based in Kasur/Lahore, Pakistan.
+- Education: BS Software Engineering at Lahore College for Women University (LCWU), 2022–2026. Matric 964/1100 (A+), Intermediate 958/1100 (A+). CGPA 3.20.
+- Goal: MS/PhD in Computer Science / AI in the USA, Fall 2027. Open to freelance, contract, and full-time work until then.
+- Contact: io@anber.me · anber.me/contact · anber.me/services · GitHub github.com/anberaziz5 · LinkedIn linkedin.com/in/anber-aziz
+- Starting rate: $20/hr or $500 base project fee. Do not negotiate; invite a free consultation.
+- Services: custom RAG pipelines, agentic AI, LLM guardrails, computer vision, high-performance Next.js/React, APIs, automation.
+- Flagship projects (2025): CyberGuard (AI threat intelligence), Omni-Node (autonomous SRE mesh, Isolation Forest + Gemini), Predictive Supply Chain Nervous System (XGBoost logistics), OpenScholar (live arXiv RAG with Qdrant/Groq).
+- Other projects: AI PR reviewer, Enterprise AI Resume Checker, Autonomous Multi-Agent Researcher, SynthTox Engine, Feature Control Panel, HypeWear storefront.
+- Background: grew up without electricity or internet; studied by kerosene lamp; 8 km school commute; humanitarian work with Al-Khidmat, COVID rations, 2025 flood relief.`;
 
 type Section = { id: string; title: string; text: string; tokens: Map<string, number> };
 
@@ -20,10 +33,10 @@ const embedCache = new Map<string, number[]>();
 const embedInflight = new Map<string, Promise<number[]>>();
 let cachedSections: Section[] | null = null;
 
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_ANON_KEY!
-);
+const supabase =
+  process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY
+    ? createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY)
+    : null;
 
 function tokenize(text: string): string[] {
   return text
@@ -50,13 +63,18 @@ function stripMeta(content: string): string {
     .trim();
 }
 
+function loadRawKb(): string {
+  try {
+    if (fs.existsSync(KB_PATH)) return fs.readFileSync(KB_PATH, "utf8");
+  } catch {
+    // bundled markdown is the production source of truth
+  }
+  return KB_MARKDOWN;
+}
+
 function loadSections(): Section[] {
   if (cachedSections) return cachedSections;
-  if (!fs.existsSync(KB_PATH)) {
-    cachedSections = [];
-    return cachedSections;
-  }
-  const raw = fs.readFileSync(KB_PATH, "utf8");
+  const raw = loadRawKb();
   const parts = raw.split(/^# SECTION /m).slice(1);
   cachedSections = parts
     .map((part) => {
@@ -119,14 +137,16 @@ function retrieveLocal(userMessage: string, maxChars: number): string {
     })
     .filter((r) => r.score > 0)
     .sort((a, b) => b.score - a.score)
-    .slice(0, 3);
+    .slice(0, 4);
 
   if (ranked.length === 0) return fallback;
 
   let out = "";
   for (const { section } of ranked) {
     const next = out ? `${out}\n\n${section.text}` : section.text;
-    if (next.length > maxChars) return next.slice(0, maxChars);
+    if (next.length > maxChars) {
+      return (out || next).slice(0, maxChars);
+    }
     out = next;
   }
   return out;
@@ -150,7 +170,7 @@ async function embedQuery(text: string): Promise<number[]> {
         input: [text],
         model: EMBED_MODEL,
       }),
-      signal: AbortSignal.timeout(2500),
+      signal: AbortSignal.timeout(900),
     });
     const data = (await res.json()) as { data?: { embedding: number[] }[] };
     const embedding = data.data?.[0]?.embedding;
@@ -168,11 +188,12 @@ async function embedQuery(text: string): Promise<number[]> {
 }
 
 async function retrieveFromPgvector(userMessage: string, maxChars: number): Promise<string> {
+  if (!supabase || !process.env.JINA_API_KEY) return "";
   const query = expandQuery(userMessage);
   const embedding = await embedQuery(query);
   const { data, error } = await supabase.rpc("match_chunks", {
     query_embedding: embedding,
-    match_count: 6,
+    match_count: 4,
     match_threshold: SIMILARITY_THRESHOLD,
   });
   if (error) throw error;
@@ -180,7 +201,7 @@ async function retrieveFromPgvector(userMessage: string, maxChars: number): Prom
   const chunks = (data || []) as { content?: string; similarity?: number }[];
   const text = chunks
     .map((row) => stripMeta(row.content || ""))
-    .filter((c) => c.length > 40)
+    .filter((c) => c.length > 40 && !POLICY_NOISE.test(c))
     .join("\n\n");
   return text.slice(0, maxChars);
 }
@@ -189,18 +210,32 @@ function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+function mergeContext(parts: string[], maxChars: number): string {
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const part of parts) {
+    const clean = part.trim();
+    if (clean.length < 40) continue;
+    const key = clean.slice(0, 160);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(clean);
+  }
+  return out.join("\n\n").slice(0, maxChars);
+}
+
 export async function retrieveContext(userMessage: string, maxChars = 2800): Promise<string> {
   const local = retrieveLocal(userMessage, maxChars);
-  const vector = retrieveFromPgvector(userMessage, maxChars).catch((err) => {
-    console.error("pgvector retrieve failed:", err);
+  const vector = retrieveFromPgvector(userMessage, 900).catch((err) => {
+    const timeout = err && (err.code === 23 || err.name === "TimeoutError");
+    if (!timeout) console.error("pgvector retrieve failed:", err);
     return "";
   });
 
-  const raced = await Promise.race([
-    vector.then((text) => ({ source: "vector" as const, text })),
-    delay(VECTOR_TIMEOUT_MS).then(() => ({ source: "timeout" as const, text: "" })),
+  const extra = await Promise.race([
+    vector,
+    delay(VECTOR_TIMEOUT_MS).then(() => ""),
   ]);
 
-  if (raced.source === "vector" && raced.text.length > 80) return raced.text;
-  return local || raced.text;
+  return mergeContext([CORE_FACTS, local, extra], maxChars);
 }
