@@ -76,13 +76,33 @@ function AboutPhoto({
   );
 }
 
+function PhotoFrame({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="relative z-10 -mx-4 my-10 md:-mx-10">
+      <div
+        className="mx-auto w-full rounded-[30px] border-4 border-border/50 bg-card p-2 shadow-2xl md:p-4"
+        style={{
+          boxShadow:
+            "0 0 #0000004d, 0 9px 20px #0000004a, 0 37px 37px #00000042, 0 84px 50px #00000026, 0 149px 60px #0000000a, 0 233px 65px #00000003",
+        }}
+      >
+        <div
+          className="relative w-full overflow-hidden rounded-2xl bg-muted"
+          style={{ aspectRatio: "3 / 2" }}
+        >
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function AboutClient() {
-  const containerRef = useRef<HTMLDivElement>(null);
   const img5Ref = useRef(null);
   const isInView5 = useInView(img5Ref, { once: true, margin: "0px" });
 
   return (
-    <div ref={containerRef} className="flex flex-col min-h-screen pb-24">
+    <div className="flex flex-col min-h-screen pb-24">
       {/* Hero Section */}
       <section className="relative min-h-[85vh] flex items-center overflow-hidden bg-card/50 border-b border-border">
         <motion.div 
@@ -124,7 +144,7 @@ export function AboutClient() {
       <section className="py-24 bg-transparent">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-20">
-            <div className="md:col-span-5 lg:col-span-4 relative z-20">
+            <div className="md:col-span-5 lg:col-span-4">
               <div className="sticky top-32 space-y-8">
                 <FadeInSection>
                   <h2 className="text-3xl font-bold mb-6">The Journey</h2>
@@ -141,20 +161,23 @@ export function AboutClient() {
               </div>
             </div>
             
-            <div className="md:col-span-7 lg:col-span-8 space-y-12 relative z-10">
+            <div className="relative z-10 md:col-span-7 lg:col-span-8 space-y-12">
               <FadeInSection className="prose prose-lg dark:prose-invert max-w-none">
                 <p>
                 I am currently doing a Bachelor of Science in Software Engineering at Lahore College for Women University (LCWU) and planning to apply for MS and PhD programs in the United States for Fall 2027. My academic interests include improving the performance of machine learning systems, working with AI agents, and building reliable APIs and backend systems.
                 </p>
               </FadeInSection>
 
-              <AboutPhoto
-                src="/about2.webp"
-                alt="Anber Aziz working at a desk"
-                sizes="(max-width: 768px) 100vw, 720px"
-                className="relative z-0 w-full aspect-[3/2] rounded-2xl ring-1 ring-border"
-                imgClassName="object-cover object-[center_22%]"
-              />
+              <PhotoFrame>
+                <Image
+                  src="/about2.webp"
+                  alt="Anber Aziz working at a desk"
+                  fill
+                  quality={90}
+                  sizes="(max-width: 768px) 100vw, 720px"
+                  className="object-cover object-[center_22%]"
+                />
+              </PhotoFrame>
 
               <FadeInSection delay={0.2} className="prose prose-lg dark:prose-invert max-w-none">
                 <p>
@@ -165,13 +188,16 @@ export function AboutClient() {
                 </p>
               </FadeInSection>
 
-              <AboutPhoto
-                src="/about3.webp"
-                alt="Anber Aziz walking in a city"
-                sizes="(max-width: 768px) 100vw, 420px"
-                className="relative z-0 mx-auto w-full max-w-md aspect-[2/3] rounded-2xl ring-1 ring-border"
-                imgClassName="object-cover object-top"
-              />
+              <PhotoFrame>
+                <Image
+                  src="/about3.webp"
+                  alt="Anber Aziz walking in a city"
+                  fill
+                  quality={90}
+                  sizes="(max-width: 768px) 100vw, 720px"
+                  className="object-cover object-[center_18%]"
+                />
+              </PhotoFrame>
             </div>
           </div>
         </div>

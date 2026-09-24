@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "blog:covers": "node scripts/generate-blog-covers.mjs"
+    "blog:covers": "node scripts/generate-blog-covers.mjs",
+    "kb:ingest": "node scripts/ingest.mjs"
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.84",

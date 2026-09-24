@@ -2,10 +2,44 @@
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
+import { useAdaVoice } from '@/hooks/useAdaVoice';
+import { AdaVoiceSession } from '@/components/AdaVoiceSession';
+import type { VoicePhase } from '@/components/AdaVoiceWaves';
 
 const ReactMarkdown = dynamic(() => import('react-markdown'), { ssr: false });
 
 type Message = { role: 'user' | 'ada'; text: string; timestamp?: Date };
+
+async function readAdaStream(res: Response, onDelta: (text: string) => void) {
+    if (!res.body) throw new Error('No stream');
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buf = '';
+    while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += decoder.decode(value, { stream: true });
+        const parts = buf.split('\n\n');
+        buf = parts.pop() ?? '';
+        for (const part of parts) {
+            const line = part.split('\n').find((l) => l.startsWith('data:'));
+            if (!line) continue;
+            try {
+                const json = JSON.parse(line.slice(5).trim()) as { type?: string; text?: string };
+                if (json.type === 'delta' && json.text) onDelta(json.text);
+            } catch {
+                // ignore malformed chunks
+            }
+        }
+    }
+}
+
+function takeSpokenSentence(buffer: string): { ready: string; rest: string } | null {
+    const match = buffer.match(/^([\s\S]{10,}?[.!?])(?:\s+|$)/);
+    if (match) return { ready: match[1].trim(), rest: buffer.slice(match[0].length) };
+    if (buffer.trim().length > 160) return { ready: buffer.trim(), rest: '' };
+    return null;
+}
 
 export default function AdaChat() {
     const [open, setOpen] = useState(false);
@@ -19,6 +53,7 @@ export default function AdaChat() {
     }, []);
 
     function handleHideAda() {
+        hangupVoice();
         setIsHidden(true);
         setOpen(false);
         if (typeof window !== 'undefined') {
@@ -51,6 +86,14 @@ export default function AdaChat() {
 
     const [showDownloadMenu, setShowDownloadMenu] = useState(false);
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
+    const voice = useAdaVoice();
+    const speakReply = useRef(false);
+    const spokenTail = useRef('');
+    const voiceBusy = useRef(false);
+    const liveRef = useRef(false);
+    const [voiceLive, setVoiceLive] = useState(false);
+    const [voicePhase, setVoicePhase] = useState<VoicePhase>('listening');
+    const [voiceCaption, setVoiceCaption] = useState('');
 
     // Security State
     const adversarialCount = useRef(0);
@@ -111,6 +154,7 @@ export default function AdaChat() {
     }
 
     async function closeWidget() {
+        hangupVoice();
         setOpen(false);
         if (messages.length >= 2 && !hasSentTranscript.current && userInfo) {
             hasSentTranscript.current = true;
@@ -330,9 +374,10 @@ export default function AdaChat() {
         }
     }
 
-    async function sendMessage() {
-        if (!input.trim() || loading || isBlocked) return;
-        const userMsg = input.trim();
+    async function sendMessage(override?: string) {
+        const userMsg = (override ?? input).trim();
+        if (!userMsg || isBlocked) return;
+        if (loading && !override) return;
         setInput('');
         setMessages(prev => [...prev, { role: 'user', text: userMsg, timestamp: new Date() }]);
 
@@ -389,28 +434,58 @@ export default function AdaChat() {
         }
 
         setLoading(true);
+        const shouldSpeak = speakReply.current;
+        speakReply.current = false;
+        spokenTail.current = '';
+        setMessages(prev => [...prev, { role: 'ada', text: '', timestamp: new Date() }]);
+
         try {
             const res = await fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     message: userMsg,
+                    voice: shouldSpeak,
                     history: messages.map((m) => ({
                         role: m.role === 'user' ? 'user' : 'assistant',
                         content: m.text,
                     })),
                 }),
             });
-            const data = await res.json();
-            const reply = typeof data.reply === 'string' && data.reply.trim()
-                ? data.reply
-                : "I'm experiencing a brief technical issue. Please try again in a moment.";
 
-            const adaTriggerPhrase = 'would you like me to help you book a meeting with anber directly here';
-            if (reply.toLowerCase().includes(adaTriggerPhrase) && !bookingMode) {
-              // Do NOT auto-start booking — just make sure next user affirmative triggers it
-              // The adaOfferedBooking check in Fix 1 will handle this correctly
+            let reply = '';
+            await readAdaStream(res, (delta) => {
+                reply += delta;
+                setMessages(prev => {
+                    const next = [...prev];
+                    const last = next[next.length - 1];
+                    if (last?.role === 'ada') next[next.length - 1] = { ...last, text: last.text + delta };
+                    return next;
+                });
+                if (shouldSpeak) {
+                    spokenTail.current += delta;
+                    const chunk = takeSpokenSentence(spokenTail.current);
+                    if (chunk) {
+                        spokenTail.current = chunk.rest;
+                        voice.speak(chunk.ready);
+                    }
+                }
+            });
+
+            const finalReply = reply.trim() || "I'm experiencing a brief technical issue. Please try again in a moment.";
+            if (!reply.trim()) {
+                setMessages(prev => {
+                    const next = [...prev];
+                    const last = next[next.length - 1];
+                    if (last?.role === 'ada') next[next.length - 1] = { ...last, text: finalReply };
+                    return next;
+                });
             }
+            if (shouldSpeak && spokenTail.current.trim()) {
+                voice.speak(spokenTail.current.trim());
+                spokenTail.current = '';
+            }
+            if (shouldSpeak) await voice.flushSpeech();
 
             const refusalPhrases = [
               "I can only answer questions about Anber",
@@ -419,7 +494,7 @@ export default function AdaChat() {
               "I must politely refuse",
             ];
 
-            const isRefusal = refusalPhrases.some(phrase => reply.includes(phrase));
+            const isRefusal = refusalPhrases.some(phrase => finalReply.includes(phrase));
             if (isRefusal) {
               adversarialCount.current += 1;
             }
@@ -427,14 +502,79 @@ export default function AdaChat() {
             if (adversarialCount.current >= 5) {
               setIsBlocked(true);
               setMessages(prev => [...prev, { role: 'ada', text: "This session has been flagged for unusual activity. Please reach out to Anber directly at io@anber.me if you have a genuine inquiry.", timestamp: new Date() }]);
-            } else {
-              setMessages(prev => [...prev, { role: 'ada', text: reply, timestamp: new Date() }]);
             }
         } catch {
-            setMessages(prev => [...prev, { role: 'ada', text: 'Something went wrong. Please try again.', timestamp: new Date() }]);
+            setMessages(prev => {
+                const next = [...prev];
+                const last = next[next.length - 1];
+                if (last?.role === 'ada' && !last.text) {
+                    next[next.length - 1] = { ...last, text: 'Something went wrong. Please try again.' };
+                    return next;
+                }
+                return [...next, { role: 'ada', text: 'Something went wrong. Please try again.', timestamp: new Date() }];
+            });
         } finally {
             setLoading(false);
         }
+    }
+
+    async function handleVoiceBlob(blob: Blob | null) {
+        if (!liveRef.current || voiceBusy.current || !blob || blob.size < 400) {
+            if (liveRef.current && !voiceBusy.current) {
+                try { await voice.startListening((next) => { void handleVoiceBlob(next); }); } catch { /* ignore */ }
+            }
+            return;
+        }
+        voiceBusy.current = true;
+        setVoicePhase('thinking');
+        try {
+            const text = await voice.transcribe(blob);
+            if (!liveRef.current) return;
+            if (!text || /^(um+|uh+|hmm+|ah+)$/i.test(text.trim())) {
+                setVoicePhase('listening');
+                await voice.startListening((next) => { void handleVoiceBlob(next); });
+                return;
+            }
+            setVoiceCaption(text);
+            speakReply.current = true;
+            setVoicePhase('speaking');
+            await sendMessage(text);
+            if (!liveRef.current) return;
+            setVoicePhase('listening');
+            setVoiceCaption('');
+            await voice.startListening((next) => { void handleVoiceBlob(next); });
+        } catch {
+            if (!liveRef.current) return;
+            setVoiceCaption('I missed that — try again.');
+            setVoicePhase('listening');
+            try { await voice.startListening((next) => { void handleVoiceBlob(next); }); } catch { /* ignore */ }
+        } finally {
+            voiceBusy.current = false;
+        }
+    }
+
+    async function startLiveVoice() {
+        if (isBlocked || bookingMode || !userInfo) return;
+        liveRef.current = true;
+        setVoiceLive(true);
+        setVoicePhase('listening');
+        setVoiceCaption('');
+        try {
+            await voice.startListening((blob) => { void handleVoiceBlob(blob); });
+        } catch {
+            liveRef.current = false;
+            setVoiceLive(false);
+            setErrorMsg('Microphone permission is required for voice chat.');
+            setTimeout(() => setErrorMsg(null), 3000);
+        }
+    }
+
+    function hangupVoice() {
+        liveRef.current = false;
+        voice.endSession();
+        setVoiceLive(false);
+        setVoiceCaption('');
+        setVoicePhase('listening');
     }
 
     return (
@@ -487,7 +627,10 @@ export default function AdaChat() {
             <div 
                 className={`fixed z-[60] flex flex-col bg-background shadow-xl border border-border transition-all duration-200 ease-out overflow-hidden
                     ${open && !isHidden ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-4 pointer-events-none'}
-                    bottom-0 right-0 w-full h-[100dvh] rounded-none sm:bottom-auto sm:top-[max(16px,calc(100vh-560px))] sm:right-[20px] sm:w-[380px] sm:h-[min(520px,calc(100vh-100px))] sm:rounded-xl
+                    bottom-0 right-0 w-full h-[100dvh] rounded-none sm:bottom-auto sm:right-[20px] sm:rounded-xl
+                    ${voiceLive
+                      ? 'sm:top-[max(12px,calc(100vh-640px))] sm:w-[400px] sm:h-[min(620px,calc(100vh-80px))]'
+                      : 'sm:top-[max(16px,calc(100vh-560px))] sm:w-[380px] sm:h-[min(520px,calc(100vh-100px))]'}
                 `}
             >
                 {/* Header */}
@@ -499,11 +642,11 @@ export default function AdaChat() {
                         <div className="font-semibold text-[15px] flex items-center gap-2 text-foreground">
                             Ada
                             <span className="flex items-center gap-1.5 text-[11px] font-normal text-muted-foreground">
-                                <span className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_4px_rgba(34,197,94,0.5)]"></span>
-                                Online
+                                <span className={`w-2 h-2 rounded-full ${voiceLive ? 'bg-primary animate-pulse shadow-[0_0_6px_rgba(246,130,31,0.8)]' : 'bg-green-500 shadow-[0_0_4px_rgba(34,197,94,0.5)]'}`}></span>
+                                {voiceLive ? 'Live' : 'Online'}
                             </span>
                         </div>
-                        <div className="text-[12px] text-muted-foreground">Anber's AI Assistant</div>
+                        <div className="text-[12px] text-muted-foreground">{voiceLive ? 'Realtime voice' : "Anber's AI Assistant"}</div>
                     </div>
                     <div className="ml-auto flex items-center">
                         {messages.length > 0 && userInfo && (
@@ -582,6 +725,13 @@ export default function AdaChat() {
                             </button>
                         </div>
                     </div>
+                ) : voiceLive ? (
+                    <AdaVoiceSession
+                        phase={voicePhase}
+                        level={voice.speaking ? 0.7 : voice.level}
+                        caption={voiceCaption}
+                        onHangup={hangupVoice}
+                    />
                 ) : (
                     <>
                         {/* Messages */}
@@ -594,6 +744,7 @@ export default function AdaChat() {
                                 </div>
                             )}
                             {messages.map((m, i) => (
+                                m.text || m.role === 'user' ? (
                                 <div key={i} className={`flex flex-col ${m.role === 'user' ? 'items-end' : 'items-start'}`}>
                                     <div className={`whitespace-pre-wrap rounded-xl px-4 py-2.5 text-[14px] max-w-[85%] leading-relaxed ${m.role === 'user'
                                         ? 'bg-muted text-foreground rounded-br-sm'
@@ -641,22 +792,44 @@ export default function AdaChat() {
                                         </div>
                                     )}
                                 </div>
-                            ))}
-                            {loading && (
-                                <div className="flex justify-start">
-                                    <div className="bg-primary text-primary-foreground rounded-xl rounded-bl-sm px-4 py-2.5 text-[14px] animate-pulse opacity-80">
-                                        Ada is typing...
+                                ) : (
+                                  loading && i === messages.length - 1 ? (
+                                    <div key={i} className="flex justify-start">
+                                        <div className="bg-primary text-primary-foreground rounded-xl rounded-bl-sm px-4 py-2.5 text-[14px] animate-pulse opacity-80">
+                                            Ada is typing...
+                                        </div>
                                     </div>
-                                </div>
-                            )}
+                                  ) : null
+                                )
+                            ))}
                             <div ref={bottomRef} className="h-1" />
                         </div>
 
                         {/* Input */}
                         <div className="p-3 border-t border-border bg-card shrink-0">
-                            <div className="flex gap-2 relative">
+                            <div className="flex gap-2 items-end">
+                                <button
+                                    type="button"
+                                    onClick={startLiveVoice}
+                                    disabled={isBlocked || bookingMode}
+                                    className={`shrink-0 w-11 h-11 rounded-lg flex items-center justify-center transition-all bg-muted text-foreground hover:bg-primary hover:text-primary-foreground disabled:opacity-50`}
+                                    aria-label="Start live voice chat"
+                                    title="Talk with Ada"
+                                >
+                                    {voice.listening ? (
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                            <rect x="4" y="4" width="8" height="8" rx="1.5" />
+                                        </svg>
+                                    ) : (
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M8 12a3 3 0 0 0 3-3V4a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3z" />
+                                            <path d="M5 9a.5.5 0 0 0-1 0 4 4 0 0 0 3.5 3.97V15h-2a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-2v-2.03A4 4 0 0 0 12 9a.5.5 0 0 0-1 0 3 3 0 0 1-6 0z" />
+                                        </svg>
+                                    )}
+                                </button>
+                                <div className="relative flex-1">
                                 <input
-                                    className="flex-1 text-[14px] bg-background text-foreground border border-border rounded-lg pl-4 pr-12 py-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-muted-foreground shadow-sm disabled:opacity-50"
+                                    className="w-full text-[14px] bg-background text-foreground border border-border rounded-lg pl-4 pr-12 py-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-muted-foreground shadow-sm disabled:opacity-50"
                                     placeholder={isBlocked ? "Session blocked" : "Ask Ada a question..."}
                                     value={input}
                                     onChange={e => setInput(e.target.value)}
@@ -665,7 +838,7 @@ export default function AdaChat() {
                                     disabled={isBlocked}
                                 />
                                 <button
-                                    onClick={sendMessage}
+                                    onClick={() => sendMessage()}
                                     disabled={loading || !input.trim() || isBlocked}
                                     className="absolute right-1.5 top-1.5 bottom-1.5 w-9 bg-primary text-primary-foreground rounded-md flex items-center justify-center disabled:opacity-50 hover:opacity-90 transition-opacity"
                                     aria-label="Send message"
@@ -674,6 +847,7 @@ export default function AdaChat() {
                                         <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm.851-1.364L1.576 6.13l11.83-3.66z" />
                                     </svg>
                                 </button>
+                                </div>
                             </div>
                         </div>
                     </>
