@@ -4,7 +4,6 @@
 User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /blog/admin
 
 # Explicitly allow specific AI crawlers for AEO and GEO visibility
 User-agent: GPTBot

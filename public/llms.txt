@@ -16,6 +16,7 @@ Anber delivers full-stack software engineering with a focus on AI integration, s
 ## Links
 
 - [Portfolio & Services](https://anber.me/services)
+- [Blog](https://www.anber.me/blog)
 - [Contact & Book a Call](https://anber.me/contact)
 - [GitHub](https://github.com/anberaziz5)
 - [LinkedIn](https://linkedin.com/in/anber-aziz)

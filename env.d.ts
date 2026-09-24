@@ -10,9 +10,6 @@ declare global {
       JINA_API_KEY: string;
       RESEND_API_KEY: string;
       RESEND_FROM_EMAIL?: string;
-      NEXT_PUBLIC_SANITY_PROJECT_ID?: string;
-      NEXT_PUBLIC_SANITY_DATASET?: string;
-      NEXT_PUBLIC_SANITY_API_VERSION?: string;
       MONGODB_URI?: string;
     }
   }
